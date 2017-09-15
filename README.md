@@ -13,5 +13,5 @@ In Python soll folgendes umgesetzt werden:
 -Programmieren eines Assemblers
 -evtl. Umsetzung in einer GUI
 Je nach Zeit soll der Rechner erweitert werden, zB durch ein Interrupt-Register etc.
-![Unbenannt](pictures/Unbenannt.png "Screenshot von AppLab")
+![Unbenannt](pictures/Unbenannt.PNG "Screenshot von AppLab")
 

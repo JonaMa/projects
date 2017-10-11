@@ -14,4 +14,32 @@ In Python soll folgendes umgesetzt werden:
 -evtl. Umsetzung in einer GUI
 Je nach Zeit soll der Rechner erweitert werden, zB durch ein Interrupt-Register etc.
 ![Unbenannt](pictures/Unbenannt.PNG "Screenshot von AppLab")
+jmf k		[Adr:0][Endlosschleife]
+tak 
+
+
+
+
+
+
+
+
+
+{warten auf eingabe}
+einlesen 1.Zeichen
+	push
+	{i+=1
+	jmt k[2]
+pop a
+stoi a
+(jmp if i=1)
+[pop a 
+if a<0xa:
+mult A*10
+sto
+	
+
+
+
+ 
 

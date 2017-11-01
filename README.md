@@ -1,5 +1,6 @@
-Bau eines virtuellen Mikroprozessors
-Einleitung
+#Bau eines virtuellen Mikroprozessors
+##Einleitung
+###bla
 Vor einiger Zeit wurde mein Interesse am Bau von logischen Schaltkreisen durch ein Handy-Spiel angefacht. Um den Funktion der mir angebotenen Bauteile zu verstehen, eignete ich mir durch Artikel und Videos Wissen an und begann, kleinere Schaltungen zu entwerfen.
 Diese reichten von einer Musikanlage zu einem Codeschloss bis hin zu einem 3-Bit-Rechner, der Zahlen von -7 bis +7 verrechnete und das Ergebnis in einem 7-Segment-Display darstellte.
 Komfortabler als in Survivalcraft ist allerdings der Umgang mit Logisim, insbesondere bei größeren Projekten. Als Möglichkeit, einen leistungsfähigeren Rechner zu bauen, schien mir ein Rechner in Prozessorbauweise am geeignesten. Meine Bestrebung zur weiterführung des Projektes verliefen sich allerdings im Alltagsstress, sodass ich mich entschied, den Rechner im Rahmen des Informatikunterrichts weiter zu entwickeln. 

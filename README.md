@@ -9,8 +9,8 @@ Mein Ziel der Arbeit war nicht der Nachbau eines bestehenden Prozessors, sondern
 
 Logisim ist eine Simula
 ## Grundlegende Funktionsweise
-
-Grundsätzlich ist ein Prozessor eine sinnvolle Verknüpfung von Speicherbausteinen, Recheneinheiten und diverser Kontrolllogik, die ein koordinierten 
+Ein Prozessor ist eine in der Regel 
+Grundsätzlich verknüpft man mit einem Prozessor Recheneinheiten, Speicherbausteine und diverse Kontrolllogik so mit einander, dass   
 
 ## Die Teilschaltungen im Detail
 

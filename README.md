@@ -41,7 +41,7 @@ Alle Teilschaltungen sind neben einzelnen Steuerleitungen über sog. Busse mitei
 
 **Befehlsbus:** ist in 4 Unterbusse aufgeteilt und übermittelt die Programmbefehle an die Steuerwerke der Bauteile
 
-**Datenbus:** Auf ihm werden können jegliche Berechnungsdaten zu den Bauteilen transportiert werden(z.B das Ergebnis einer Addition)
+**Datenbus:** Auf ihm werden können jegliche Berechnungsdaten zu den Bauteilen transportiert werden(z.B das Ergebnis einer Addition).
 
 **Adressbus:** Dieser dient zur Adressierung von RAM und ROM
 Eine nähere Beschreibung erfogt im #Technischen Überblick
@@ -50,11 +50,20 @@ Eine nähere Beschreibung erfogt im #Technischen Überblick
 
 ### Struktur der Maschienensprache
 
+Wie erwähnt werden die 
 Zum detaillierten Verständnis der gesammten Schaltung ist es notwendig, die spezifische Maschienensprache des Prozessors grob zu kennen. Dieser teilt sich auf in: 
 ```
 0000 0    0000    0000      0000000000
-OPC       Drain   Source    immidiate value
+Opcode    Drain   Source    immidiate value
 ```
+**Opcode:** in diesem wird der Hauptbefehl angegeben(z.B "Verschiebe einen Wert")
+
+**Drain und Source:** Fast alle Speicher im Prozessor lassen sich entweder als *Senke*(drain) oder *Quelle*(source)ansprechen. Mit beiden Werten kann der Opcode weiter konkretisiert werden: "Verschiebe nach Register A den Wert von Register B". Register A ist in diesem Fall die Senke, Register B die Quelle (Es wird in der Formulierung immer zuerst die Senke genannt).
+
+**Immidiate value:** In vielen Fällen muss der Programmierer feste Werte oder Adressen angeben können. Diese werden in den letzten 10 Bits des Befehlsbus übermittelt. Damit wäre die Anweisung "Schreibe den Wert X in das Register A" möglich
+
+"Verschiebe den Wert
+
 
 
 ### ROM

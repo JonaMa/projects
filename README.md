@@ -17,16 +17,45 @@ Grundsätzlich verknüpft man mit einem Prozessor Recheneinheiten, Speicherbaust
 
 #### ROM (Befehlsspeicher) und RAM (Datenspeicher)
 
-Auf dem Befehlsspeicher befinden sich die auszuführenden Programme in Form einzelner Befehle. Daten, die durch Berechnungen oder Nutzereingaben anfallen, werden auf dem Datenspeicher abgelegt. Der Befehlsspeicher ist hier als Festwertspeicher konzipiert (ROM = *Read Only Memory*, freie Adressierung, jedoch kein Beschreiben möglich), während den Datenspeicher ein Direktzugriffsspeicher/RAM bildet (RAM = *Random-Access Memory*, freie Adressierung sowie lesen und schreiben möglich). Die bauliche Trennung von Daten- und Befehlsspeicher entspricht der *Harvard-Architektur*. In der *Von-Neumann-Architektur* dagegen liegen Daten und Befehle auf einem gemeinsamen Speicher vor. Letztere zeichnen sich durch eine hohe Universalität, weshalb fast alle modernen Hauptprozessoren dieser Gattung angehören. sind jedoch in ihrer Impementierung komplizierter. Erstere dagegen werden heutzutage in 
+Auf dem Befehlsspeicher befinden sich die auszuführenden Programme in Form einzelner Befehle. Daten, die durch Berechnungen oder Nutzereingaben anfallen, werden auf dem Datenspeicher abgelegt. Der Befehlsspeicher ist hier als *Festwertspeicher* konzipiert (*ROM* = *Read Only Memory*, freie Adressierung, jedoch kein Beschreiben möglich), während den Datenspeicher ein *Direktzugriffsspeicher/RAM* bildet (*RAM* = *Random-Access Memory*, freie Adressierung sowie lesen und schreiben möglich). Die bauliche Trennung von Daten- und Befehlsspeicher entspricht der *Harvard-Architektur*(siehe Abschnitt #Einordnung)
 
+#### ALU (arithmetic logic unit)
 
-(letzteres gilt nur für die *Von-Neumann-Architektur*. In der *Harvard-Architektur* dagegen existiert neben dem Befehlsspeicher ein seperater Datenspeicher. Vorteil ist, dass Befehle und benötigte Daten gleichzeitig statt hintereinander geladen und verarbeitet werden können.). ROM steht für *Read Only Memory*, d.h. es kann aus dem Speicher ausschließlich gelesen werden (Um Daten  
+Die zu deutsch *arithmetisch-logische Einheit* stellt das Rechenwerk des Prozessors da. Je nach Umfang lassen sich mit ihr sowohl arithmetische Operationen(z.B Grundrechenarten), logische Operationen(z.B. Konjunktion, Negation, Vergleichsoperation etc.) als auch Bitmanipulationen(z.B einzelne Bits/Bitgruppen verändern) durchführen. Weiterhin werden zusätzliche Informationen über die Berechnungen(z.B Auftreten eines Übertrags, Division durch 0 etc.) an die Statusregister weitergegeben.
 
+#### Statusregister
 
+Die Statusregister sind einzelne Flipflops, die bestimmte Zustände des Prozessors abspeichern. Wie erwähnt können entsprechende Informationen von der ALU, aber auch von anderen Komponenten wie dem Ein-und Ausgabecontroller stammen. Eine nähere Beschreibung erfogt im Abschnitt #Detailierte Übersicht#Statusregister.
+
+#### Register
+
+Alle Daten, die sich in unmittelbarer Bearbeitung befinden, werden für den schnellen Abruf in einzelnen Speichern, den sog. Registern zwischengespeichert. Es existieren neben den *GPRs* (*General Purpose Register*, universell nutzbar) auch Spezialregister wie einem Adress-Register(siehe Abschnitt #DÜ#Reg)
+
+#### Steuerwerk
+
+Das Steuerwerk ist für die Decodierung und Interpretation der Befehle zuständig. Dazu spricht es die betreffendden Bauteile über Kontrollleitungen an. In meiner Prozessorimplementierung existiert kein zentrales Steuerwerk, dagegen befindet sich die nötige Kontrolllogik direkt bei den zugehörigen Teilschaltungen.
 
 ### Bussysteme
 
-## Die Teilschaltungen im Detail
+Alle Teilschaltungen sind neben einzelnen Steuerleitungen über sog. Busse miteinander verknüpft. Ein *Bus* wird aus mehreren gekoppelten Bits gebildet, dadurch können größerer Zahlenwerte oder Adressen übermittelt werden. Folgende Busse existieren in meinem Prozessor:
+
+**Befehlsbus:** ist in 4 Unterbusse aufgeteilt und übermittelt die Programmbefehle an die Steuerwerke der Bauteile
+
+**Datenbus:** Auf ihm werden können jegliche Berechnungsdaten zu den Bauteilen transportiert werden(z.B das Ergebnis einer Addition)
+
+**Adressbus:** Dieser dient zur Adressierung von RAM und ROM
+Eine nähere Beschreibung erfogt im #Technischen Überblick
+
+## Technischer Überblick
+
+### Struktur der Maschienensprache
+
+Zum detaillierten Verständnis der gesammten Schaltung ist es notwendig, die spezifische Maschienensprache des Prozessors grob zu kennen. Dieser teilt sich auf in: 
+```
+0000 0    0000    0000      0000000000
+OPC       Drain   Source    immidiate value
+```
+
 
 ### ROM
 
@@ -65,3 +94,6 @@ Anmerkung: Obiges Schaltnetz ist von unten nach oben zu betrachten. Halbaddierer
 ## Assemblerprogrammierung: Snake
 
 ## Einordnung
+
+Die bauliche Trennung von Daten- und Befehlsspeicher entspricht der Harvard-Architektur. In der Von-Neumann-Architektur dagegen liegen Daten und Befehle auf einem gemeinsamen Speicher vor. Letztere zeichnen sich durch eine hohe Universalität, weshalb fast alle modernen Hauptprozessoren dieser Gattung angehören. sind jedoch in ihrer Impementierung komplizierter. Erstere dagegen werden heutzutage in
+ Vorteil ist, dass Befehle und benötigte Daten gleichzeitig statt hintereinander geladen und verarbeitet werden können.

@@ -25,7 +25,7 @@ Die zu deutsch *arithmetisch-logische Einheit* stellt das Rechenwerk des Prozess
 
 #### Statusregister
 
-Die Statusregister sind einzelne Flipflops, die bestimmte Zustände des Prozessors abspeichern. Wie erwähnt können entsprechende Informationen von der ALU, aber auch von anderen Komponenten wie dem Ein-und Ausgabecontroller stammen. Eine nähere Beschreibung erfogt im Abschnitt #Detailierte Übersicht#Statusregister.
+Die Statusregister sind einzelne Flipflops, die bestimmte Zustände des Prozessors abspeichern. Wie erwähnt können entsprechende Informationen von der ALU, aber auch von anderen Komponenten wie dem Ein-und Ausgabecontroller stammen. Sinn der Statusregister ist die Ausführung bedingter Sprungbefehle. Dabei springt der Prozessor unter einer bestimmten Bedingung zu einer anderen Programmadresse.Eine nähere Beschreibung erfogt im Abschnitt #Detailierte Übersicht#Statusregister.
 
 #### Register
 
@@ -48,10 +48,10 @@ Eine nähere Beschreibung erfogt im #Technischen Überblick
 
 ## Technischer Überblick
 
-### Struktur der Maschienensprache
+### Struktur des Befehlssatzes
 
 Wie erwähnt werden die 
-Zum detaillierten Verständnis der gesammten Schaltung ist es notwendig, die spezifische Maschienensprache des Prozessors grob zu kennen. Dieser teilt sich auf in: 
+Zum detaillierten Verständnis der gesammten Schaltung ist es notwendig, die spezifische Befehlssatzstruktur des Prozessors zu kennen. Mit dem Befehlssatz wird die Gesamtheit aller gültigen Maschienen-Befehle bezeichnet. Die einzelnen Befehle aus dem Befehlssatz werden in dem 23-Bit breiten Befehlsbus übermittelt, wobei dieser funktionell in mehrere Bitgruppen gegliedert ist, wie im Folgenden zu sehen:
 ```
 0000 0    0000    0000      0000000000
 Opcode    Drain   Source    immidiate value
@@ -62,16 +62,26 @@ Opcode    Drain   Source    immidiate value
 
 **Immidiate value:** In vielen Fällen muss der Programmierer feste Werte oder Adressen angeben können. Diese werden in den letzten 10 Bits des Befehlsbus übermittelt. Damit wäre die Anweisung "Schreibe den Wert X in das Register A" möglich
 
-"Verschiebe den Wert
+**Letztes Opcode-Bit:** Das letzte Bit des Opcodes ist für eine Spezialfunktion reserviert. Ein Setzen des Bits bewirkt, das *immidiate value* auf den Adressbus gelegt wird. Bei nicht gesetztem Bit wird als Quelle fur den Adressbus das Adressregister ausgewählt. Der Programmierer kann dadurch direkt aus bestimmten Adressen der RAM speichern bzw laden oder explizite Sprungadressen für die ROM angegeben. Folgender Befehl ist damit möglich: "Verschiebe nach Reggister A den Wert aus Adresse 17 der RAM".
 
+§§§Tabelle mit Befehslsatz und Anmerkungen 
 
+### Takt
+
+Zeitlich wird der Prozessor über einen Takt koordiniert. In jedem Taktzyklus,bestehend aus steigender und fallender Taktflanke, wird ein neuer Befehl geladen, decodiert und ausgeführt.  
 
 ### ROM
+
+Bild
+
+Die eigentliche ROM besitzt links einen Adresseingang und rechts einen Datenausgang. Die Adressen stammen vom *Instruction Pointer* links daneben. Im Normalbetrieb zählt dieser Aufwärts und ruft nach der Ausführung des alten Befehls bei steigender Taktflanke den neuen Befehl auf. Bei der Ausführung von Sprungbefehlen {jump} wird der alte Zählerwert durch den Wert vom Adressbus überschrieben.
+Rechts findet eine Aufsplittung des Maschienenbefehls in ihre Funktionen statt. Weiterhin kann hier bei Auswahl von *immidiate value* als Quelle dessen Bits auf den Datenbus gelegt werden.
 
 ### RAM
 
 ### Register
 
+Es sind in meinem Prozessor momentan 5 *General Purpose Register* Register (AX-EX, das X steht für die Verwendung als GPR) sowie ein Adressregister (P für *Pointer-Register*) vorhanden. Zusätzlich kann ein Zufallsgenerator als Quelle angesprochen werden. Für die Auswahl des Quellregisters ist der 1. Multiplexer verantwortlich. Über ihn kann ein beliebiges Register auf den Datenbus gelegt werden. Bei einem ALU- Befehl allerdings wird der Ausgang zum Datenbus gesperrt, sodass der Wert ausschließlich auf den 1. Direktbus zur ALU gelegt wird. Das Sperren ist notwendig, da das Berechnungsergebnis über den Datenbus zurückgeschrieben wird. Über den 2. Multiplexer kann ein 2. ALU-Operator über den 2. Direktbus ausgewählt werden. 
 ### ALU
 
 #### Addier-/Subtrahier-Werk

@@ -15,6 +15,8 @@ Grundsätzlich verknüpft man mit einem Prozessor Recheneinheiten, Speicherbaust
 
 ### Funktioneller Überblick
 
+![main](https://user-images.githubusercontent.com/31915930/32954671-0dd3043e-cbb4-11e7-8f57-0f6844a8839f.PNG)
+
 #### ROM (Befehlsspeicher) und RAM (Datenspeicher)
 
 Auf dem Befehlsspeicher befinden sich die auszuführenden Programme in Form einzelner Befehle. Daten, die durch Berechnungen oder Nutzereingaben anfallen, werden auf dem Datenspeicher abgelegt. Der Befehlsspeicher ist hier als *Festwertspeicher* konzipiert (*ROM* = *Read Only Memory*, freie Adressierung, jedoch kein Beschreiben möglich), während den Datenspeicher ein *Direktzugriffsspeicher/RAM* bildet (*RAM* = *Random-Access Memory*, freie Adressierung sowie lesen und schreiben möglich). Die bauliche Trennung von Daten- und Befehlsspeicher entspricht der *Harvard-Architektur*(siehe Abschnitt #Einordnung)
@@ -30,6 +32,11 @@ Die Statusregister sind einzelne Flipflops, die bestimmte Zustände des Prozesso
 #### Register
 
 Alle Daten, die sich in unmittelbarer Bearbeitung befinden, werden für den schnellen Abruf in einzelnen Speichern, den sog. Registern zwischengespeichert. Es existieren neben den *GPRs* (*General Purpose Register*, universell nutzbar) auch Spezialregister wie einem Adress-Register(siehe Abschnitt #DÜ#Reg)
+
+#### Stack
+
+Der Stack oder zu deutsch Stapelspeicher funktioniert nach dem LIFO-Prinzip(Last In – First Out, d.h. die Daten, die als letztes eingespeichert wurden, können beim Lesen zuerst wieder ausgegeben werden. Der Stack kann zum Beispiel dazu verwendet werden, Register freizuräumen, wenn kurzeitig ein Unterprogramm ausgeführt werden muss. In diesem Prozessor findet sich der Stack nahe der ROM.
+
 
 #### Steuerwerk
 

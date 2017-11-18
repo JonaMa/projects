@@ -37,6 +37,14 @@ Alle Daten, die sich in unmittelbarer Bearbeitung befinden, werden für den schn
 
 Der Stack oder zu deutsch Stapelspeicher funktioniert nach dem LIFO-Prinzip(Last In – First Out, d.h. die Daten, die als letztes eingespeichert wurden, können beim Lesen zuerst wieder ausgegeben werden. Der Stack kann zum Beispiel dazu verwendet werden, Register freizuräumen, wenn kurzeitig ein Unterprogramm ausgeführt werden muss. In diesem Prozessor findet sich der Stack nahe der ROM.
 
+#### Eingabecontroller
+
+Die Nutzereingaben werden in einem Puffer zwischengespeichert. Der Controller steuert das Auslesen des Puffers, wandelt die Eingaben um und gibt sie an den Computer weiter.
+
+#### Framebuffer
+
+Der Framebuffer ist ein Speicher, der eine digitale Kopie des Bildschirms beinhaltet. Notwendig ist dieser, um das bestehende Bild zwischen den Bearbeitungsphasen zu erhalten. 
+
 
 #### Steuerwerk
 
@@ -48,7 +56,7 @@ Alle Teilschaltungen sind neben einzelnen Steuerleitungen über sog. Busse mitei
 
 **Befehlsbus:** ist in 4 Unterbusse aufgeteilt und übermittelt die Programmbefehle an die Steuerwerke der Bauteile
 
-**Datenbus:** Auf ihm werden können jegliche Berechnungsdaten zu den Bauteilen transportiert werden(z.B das Ergebnis einer Addition).
+**Datenbus:** Auf ihm findet der gesammte Datenaustausch zwischen den Bauteilen statt. Die Besonderheit des Busses liegt in seiner bidirektionalen Nutzung: Daten können von einem beliebigen Bauteil in alle Richtung zu anderen Bauteilen transferiert werden. Alle anderen Busse sind unidirektional konzipiert und besitzen damit eine feste Datenquelle.
 
 **Adressbus:** Dieser dient zur Adressierung von RAM und ROM
 Eine nähere Beschreibung erfogt im #Technischen Überblick
@@ -60,18 +68,18 @@ Eine nähere Beschreibung erfogt im #Technischen Überblick
 Wie erwähnt werden die 
 Zum detaillierten Verständnis der gesammten Schaltung ist es notwendig, die spezifische Befehlssatzstruktur des Prozessors zu kennen. Mit dem Befehlssatz wird die Gesamtheit aller gültigen Maschienen-Befehle bezeichnet. Die einzelnen Befehle aus dem Befehlssatz werden in dem 23-Bit breiten Befehlsbus übermittelt, wobei dieser funktionell in mehrere Bitgruppen gegliedert ist, wie im Folgenden zu sehen:
 ```
-0000 0    0000    0000      0000000000
-Opcode    Drain   Source    immidiate value
+0000 0       0000    0000      0000000000
+Opcode+ACB   Drain   Source    immidiate value
 ```
 **Opcode:** in diesem wird der Hauptbefehl angegeben(z.B "Verschiebe einen Wert")
 
-**Drain und Source:** Fast alle Speicher im Prozessor lassen sich entweder als *Senke*(drain) oder *Quelle*(source)ansprechen. Mit beiden Werten kann der Opcode weiter konkretisiert werden: "Verschiebe nach Register A den Wert von Register B". Register A ist in diesem Fall die Senke, Register B die Quelle (Es wird in der Formulierung immer zuerst die Senke genannt).
+**Drain und Source/Dr,So:** Fast alle Speicher im Prozessor lassen sich entweder als *Senke*(Drain) oder *Quelle*(Source)ansprechen. Mit beiden Werten kann der Opcode wie im folgenden Beispiel weiter konkretisiert werden: "Verschiebe nach Register A den Wert von Register B". Register A ist in diesem Fall die Senke, Register B die Quelle (Es wird in der Formulierung immer zuerst die Senke genannt). Der Datentransfer findet über den Datenbus statt: Der Wert von Register B wird auf den Datenbus gelegt, während in Register A der Wert vom Datenbus gespeichert wird. Bei einem ALU-Befehl wird das Ergebnis über den Datenbus zurückgeschrieben, daher sind 2 Direktbusse für die Operanden A und B notwendig, die aus den Registern gewählt werden können.
 
-**Immidiate value:** In vielen Fällen muss der Programmierer feste Werte oder Adressen angeben können. Diese werden in den letzten 10 Bits des Befehlsbus übermittelt. Damit wäre die Anweisung "Schreibe den Wert X in das Register A" möglich
+**Immediate value/ImV:** In vielen Fällen muss der Programmierer feste Werte, Adressen oder Pixelkoordinaten angeben können. Diese werden in den letzten 10 Bits des Befehlsbus übermittelt. *immediate value* kann als Quelle angesprochen werden und wird in diesem Fall auf den Datenbus gelegt. Damit wäre die Anweisung "Schreibe den Wert X in das Register A" möglich. Weiterhin werden die Bits bei bestimmten Befehlen für die Übergabe zusätzlicher Argumente verwendet (beim ALU-Befehl: Auswahl der Operation und optional zweiter Quelle, beim Reset-Befehl den zu löschenden Speicher).
 
-**Letztes Opcode-Bit:** Das letzte Bit des Opcodes ist für eine Spezialfunktion reserviert. Ein Setzen des Bits bewirkt, das *immidiate value* auf den Adressbus gelegt wird. Bei nicht gesetztem Bit wird als Quelle fur den Adressbus das Adressregister ausgewählt. Der Programmierer kann dadurch direkt aus bestimmten Adressen der RAM speichern bzw laden oder explizite Sprungadressen für die ROM angegeben. Folgender Befehl ist damit möglich: "Verschiebe nach Reggister A den Wert aus Adresse 17 der RAM".
+**Adressbus Controll Bit/ACB:** Das letzte Bit des Opcodes ist für eine Spezialfunktion reserviert. Ein Setzen des Bits bewirkt, das *immediate value* auf den Adressbus gelegt wird. Bei nicht gesetztem Bit wird als Quelle fur den Adressbus das Adressregister ausgewählt. Der Programmierer kann dadurch direkt aus bestimmten Adressen der RAM speichern bzw laden oder explizite Sprungadressen für die ROM angegeben. Folgende Befehle sind damit möglich: "Verschiebe nach Reggister A den Wert aus Adresse 17 der RAM" oder "springe zu Adresse 42 der ROM"(bedeutet den Sprung zu einem anderen Programmteil).
 
-§§§Tabelle mit Befehslsatz und Anmerkungen 
+Es folgt nun eine Übersicht des Befehlssatzes. Die Kennnummern der ALU-Operationen kann man der 2. Tabelle entnehmen. Die Kennnummern aller Speicher sind in der 3. Tabelle "Memory-Table" vermerkt.
 
 ### Takt
 
@@ -81,15 +89,24 @@ Zeitlich wird der Prozessor über einen Takt koordiniert. In jedem Taktzyklus,be
 
 Bild
 
-Die eigentliche ROM besitzt links einen Adresseingang und rechts einen Datenausgang. Die Adressen stammen vom *Instruction Pointer* links daneben. Im Normalbetrieb zählt dieser Aufwärts und ruft nach der Ausführung des alten Befehls bei steigender Taktflanke den neuen Befehl auf. Bei der Ausführung von Sprungbefehlen {jump} wird der alte Zählerwert durch den Wert vom Adressbus überschrieben.
-Rechts findet eine Aufsplittung des Maschienenbefehls in ihre Funktionen statt. Weiterhin kann hier bei Auswahl von *immidiate value* als Quelle dessen Bits auf den Datenbus gelegt werden.
+Die eigentliche ROM (1) besitzt links einen Adresseingang und rechts einen Datenausgang. Die Adressen stammen vom *Instruction Pointer*(2) (Befehlszähler). Im Normalbetrieb zählt dieser Aufwärts und ruft nach der Ausführung des alten Befehls bei steigender Taktflanke den neuen Befehl auf. Bei der Ausführung von Sprungbefehlen durch den Pin "jump" wird der alte Zählerwert durch den Wert vom Adressbus überschrieben.
+Rechts findet eine Aufsplittung des Maschienenbefehls in ihre Funktionen statt. Weiterhin kann hier bei Auswahl von *immidiate value* als Quelle (3) dessen Bits auf den Datenbus gelegt werden.
 
-### RAM
+### RAM und Stack
 
+Der obere Speicherbaustein stellt den RAM (1) dar. Adressiert wird er über den Adressbus. Der Stack (2) wird hingegen über den Stackpointer adressiert, der beim Speichern inkrementiert und beim Lesen dekrementiert wird, um das bereits erwähnte FIFO-Prinzip zu gewährleisten. Wie der RAM besitzt wie der Stack einen gemeinsamen Speicher-und Ladeport, der mit dem Datenbus verbunden ist. Ob und welches der Bauteile als Senke oder Quelle angesprochen wird, ist durch den Drain-und Sourcebus festgelegt. Die Ansteuerung von RAM und Stack erfolgt über die Kontrollogik, die sich im linken Teil der Schaltung befindet. 
 ### Register
 
-Es sind in meinem Prozessor momentan 5 *General Purpose Register* Register (AX-EX, das X steht für die Verwendung als GPR) sowie ein Adressregister (P für *Pointer-Register*) vorhanden. Zusätzlich kann ein Zufallsgenerator als Quelle angesprochen werden. Für die Auswahl des Quellregisters ist der 1. Multiplexer verantwortlich. Über ihn kann ein beliebiges Register auf den Datenbus gelegt werden. Bei einem ALU- Befehl allerdings wird der Ausgang zum Datenbus gesperrt, sodass der Wert ausschließlich auf den 1. Direktbus zur ALU gelegt wird. Das Sperren ist notwendig, da das Berechnungsergebnis über den Datenbus zurückgeschrieben wird. Über den 2. Multiplexer kann ein 2. ALU-Operator über den 2. Direktbus ausgewählt werden. 
+Es sind in meinem Prozessor momentan 5 *General Purpose Register* Register (1-5) (AX-EX, das X steht für die Verwendung als GPR) sowie ein Adressregister (6) (P für *Pointer-Register*) vorhanden. Zusätzlich kann ein Zufallsgenerator (7) als Quelle angesprochen werden. Für die Auswahl des Quellregisters ist der 1. Multiplexer (8) verantwortlich, die Steuerung erfolgt mit dem Source-Bus. Mit der Auswahlschaltung kann ein beliebiges Register auf den Datenbus gelegt werden. Bei einem ALU- Befehl allerdings wird der Ausgang zum Datenbus gesperrt, sodass der Wert ausschließlich auf den 1. Direktbus (9) zur ALU gelegt wird. Das Sperren ist notwendig, da das Berechnungsergebnis über den Datenbus zurückgeschrieben wird. Mit dem 2. Multiplexer (10) kann ein 2. ALU-Operator über den weiteren Direktbus ausgewählt werden. Er wird beim ALU-Befehl über die unteren 5 Bits von *immidiate value* angesteuert.  
+Jedes Register verfügt neben dem Datenausgang über einen Dateneingang sowie einem Takt- und Enable-Eingang. Um in die Register zu speichern, wird das durch den Decoder (11) "enabelte" Register bei eintreffendem Takt mit dem Wert aus dem Datenbus überschrieben. Der Dekoder wird über den Drain-bus gesteuert.
+Der Multiplexer am Pointer-Register (12) wird über das 5. Opcode-Bit angesteuert und wählt entweder das Register selber oder *immidiate value* als Quelle für den Adressbus aus.
+
+
 ### ALU
+
+Alle verfügbaren Funktionen der ALU sind durch entsprechende Bausteine realisiert, die untereinander angeordnet sind. Die Auswahl der Funktion geschieht durch einen Multiplexer.
+Der Aufbau der ALU ist eher demonstrativ und weniger realitätsnah. Operationen wie die Addition und die Subtraktion lassen sich beispielsweise in einer einzigen Schaltung realisieren.
+Bla
 
 #### Addier-/Subtrahier-Werk
 

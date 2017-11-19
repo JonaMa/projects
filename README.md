@@ -2,12 +2,13 @@
 
 ## Motivation
 
-Mein Interesse am (virtuellen) Entwurf von elektrischen Schaltungen stammt ursprünglich von einem Handy-Spiel, welches entsprechende Möglichkeiten zur Verfügung stellte. Nach dem Entwurf kleinerer, eher aufgabenspezifischer Schaltungen schien die Lösung zu noch leistungsfähigeren Schaltnetzen in der Prozessorbauweise zu liegen. Anschließend folgte der Umstieg auf die Entwicklungsumgebung Logisim, mit der der Entwurf größerer Schaltungen stark vereinfacht wurde.
-Mein Ziel der Arbeit war nicht der Nachbau eines bestehenden Prozessors, sondern das eigenständige Entwickeln unter berücksichtigung gebräuchlicher Konzepte.
+Mein Interesse am (virtuellen) Entwurf von elektrischen Schaltungen stammt ursprünglich von einem Handy-Spiel, welches entsprechende Möglichkeiten zur Verfügung stellte. Nach dem Entwurf kleinerer, eher aufgabenspezifischer Schaltungen schien die Lösung zu noch leistungsfähigeren Schaltnetzen in der Prozessorbauweise zu liegen. Anschließend folgte der Umstieg auf die Entwicklungsumgebung Logisim, mit der der Entwurf größerer Schaltungen stark vereinfacht wurde. 
+Mein Ziel der Arbeit war nicht der Nachbau eines bestehenden Prozessors, sondern das eigenständige Entwickeln unter berücksichtigung gebräuchlicher Konzepte. Durch das Vorhandensein einer Ein- und Ausgabe hat das Projekt den Status eines vollwertigen Computers.
 
 ## Arbeitsumgebung
 
-Logisim ist eine Simula
+Logisim ist ein Logiksimulator, der dem Nutzer das Entwerfen und Simulieren von logischen Schaltungen ermöglicht. Angewendet wird das Programm häufig in Universitäten zu Vorlesungs- und Lehrzwecken. Neben den einfachen Grundbausteinen wie Gatter und Flipflops verfügt Logisim auch über komplexere Bausteine wie Auswahlschaltungen, Rechenwerke oder Bauteile zur Ein-und Ausgabe. Die wichtigsten benutzten Komponenten sind auf folgendem Bild zu sehen:
+ 
 ## Grundlegende Funktionsweise
 Ein Prozessor ist eine in der Regel frei programmierbare elektrische Schaltung, die Daten basierend auf den programmierten Algorythmen verarbeitet und diese anschließend an weitere Komponenten übergiebt oder Peripheriegeräte ansteuert(z.B. Bildschirm etc.). Neben der zahlreichen Verwendung als Mikrocontroller in eingebetteten Systemen(Waschmaschienen, CD-Spieler) stellt er in einem Computer als Hauptprozessor die zentrale Recheneinheit da (englisch: CPU = *Central Processing Unit*).
 
@@ -16,7 +17,7 @@ Grundsätzlich verknüpft man mit einem Prozessor Recheneinheiten, Speicherbaust
 ### Funktioneller Überblick
 
 ![main](https://user-images.githubusercontent.com/31915930/32954671-0dd3043e-cbb4-11e7-8f57-0f6844a8839f.PNG)
-
+Der Prozessor bildet den gesammten oberen Teil. Bildschirm und Eingabe gehören streng genommen nicht dazu.
 #### ROM (Befehlsspeicher) und RAM (Datenspeicher)
 
 Auf dem Befehlsspeicher befinden sich die auszuführenden Programme in Form einzelner Befehle. Daten, die durch Berechnungen oder Nutzereingaben anfallen, werden auf dem Datenspeicher abgelegt. Der Befehlsspeicher ist hier als *Festwertspeicher* konzipiert (*ROM* = *Read Only Memory*, freie Adressierung, jedoch kein Beschreiben möglich), während den Datenspeicher ein *Direktzugriffsspeicher/RAM* bildet (*RAM* = *Random-Access Memory*, freie Adressierung sowie lesen und schreiben möglich). Die bauliche Trennung von Daten- und Befehlsspeicher entspricht der *Harvard-Architektur*(siehe Abschnitt #Einordnung)
@@ -25,9 +26,9 @@ Auf dem Befehlsspeicher befinden sich die auszuführenden Programme in Form einz
 
 Die zu deutsch *arithmetisch-logische Einheit* stellt das Rechenwerk des Prozessors da. Je nach Umfang lassen sich mit ihr sowohl arithmetische Operationen(z.B Grundrechenarten), logische Operationen(z.B. Konjunktion, Negation, Vergleichsoperation etc.) als auch Bitmanipulationen(z.B einzelne Bits/Bitgruppen verändern) durchführen. Weiterhin werden zusätzliche Informationen über die Berechnungen(z.B Auftreten eines Übertrags, Division durch 0 etc.) an die Statusregister weitergegeben.
 
-#### Statusregister
+#### Statusregister/Flagregister
 
-Die Statusregister sind einzelne Flipflops, die bestimmte Zustände des Prozessors abspeichern. Wie erwähnt können entsprechende Informationen von der ALU, aber auch von anderen Komponenten wie dem Ein-und Ausgabecontroller stammen. Sinn der Statusregister ist die Ausführung bedingter Sprungbefehle. Dabei springt der Prozessor unter einer bestimmten Bedingung zu einer anderen Programmadresse.Eine nähere Beschreibung erfogt im Abschnitt #Detailierte Übersicht#Statusregister.
+Die Statusregister oder kurz Flags sind einzelne Flipflops, die bestimmte Zustände des Prozessors abspeichern. Wie erwähnt können entsprechende Informationen von der ALU, aber auch von anderen Komponenten wie dem Ein-und Ausgabecontroller stammen. Sinn der Statusregister ist die Ausführung bedingter Sprungbefehle. Dabei springt der Prozessor unter einer bestimmten Bedingung zu einer anderen Programmadresse.Eine nähere Beschreibung erfogt im Abschnitt #Detailierte Übersicht#Statusregister.
 
 #### Register
 
@@ -45,12 +46,11 @@ Die Nutzereingaben werden in einem Puffer zwischengespeichert. Der Controller st
 
 Der Framebuffer ist ein Speicher, der eine digitale Kopie des Bildschirms beinhaltet. Notwendig ist dieser, um das bestehende Bild zwischen den Bearbeitungsphasen zu erhalten. 
 
-
 #### Steuerwerk
 
 Das Steuerwerk ist für die Decodierung und Interpretation der Befehle zuständig. Dazu spricht es die betreffendden Bauteile über Kontrollleitungen an. In meiner Prozessorimplementierung existiert kein zentrales Steuerwerk, dagegen befindet sich die nötige Kontrolllogik direkt bei den zugehörigen Teilschaltungen.
 
-### Bussysteme
+#### Bussysteme
 
 Alle Teilschaltungen sind neben einzelnen Steuerleitungen über sog. Busse miteinander verknüpft. Ein *Bus* wird aus mehreren gekoppelten Bits gebildet, dadurch können größerer Zahlenwerte oder Adressen übermittelt werden. Folgende Busse existieren in meinem Prozessor:
 
@@ -104,9 +104,8 @@ Der Multiplexer am Pointer-Register (12) wird über das 5. Opcode-Bit angesteuer
 
 ### ALU
 
-Alle verfügbaren Funktionen der ALU sind durch entsprechende Bausteine realisiert, die untereinander angeordnet sind. Die Auswahl der Funktion geschieht durch einen Multiplexer.
-Der Aufbau der ALU ist eher demonstrativ und weniger realitätsnah. Operationen wie die Addition und die Subtraktion lassen sich beispielsweise in einer einzigen Schaltung realisieren.
-Bla
+Alle verfügbaren Funktionen der ALU sind durch entsprechende Bausteine realisiert, die untereinander angeordnet sind und die Operanden A und B verrechnen (bzw nur A modifizieren). Die Auswahl der Funktion geschieht durch einen Multiplexer (1), der durch die oberen 5 Bits von *immediate value* angesteuert wird. Bei der Multiplikation kann ein maximal 10 Bit großer Übertrag entstehen, bei der Division dagegen ein Rest. Diese werden in 2 separaten Speichern (2) abgelegt, die bei jeder Multiplikation/Division aktualisiert werden und über den Multipexer abrufbar sind. Weiterhin werden alle für die Statusregister wichtigen Zustände der ALU über einzelne Kontrolleitungen rechts aus der Teilschaltung geführt. Das Steuerwerk der ALU (3) befindet sich links oben.
+Der Aufbau der ALU ist eher demonstrativ und weniger realitätsnah. Operationen wie die Addition und die Subtraktion lassen sich beispielsweise in einer einzigen Schaltung realisieren. Weiterhin wurde hier nur auf Fertigbausteine von Logisim zurückgegriffen. Die Ausarbeitung der Bausteine auf Gatterebene ist zum Teil schon erfolgt und wird im zweiten Teil der Arbeit ausführlich erläutert.
 
 #### Addier-/Subtrahier-Werk
 
@@ -130,13 +129,31 @@ Umsetzung als Schaltung
 
 Das Schaltnetz folgt dem gleichen Schema, nur müssen hier die Zwischenprodukte nach und nach zusammenaddiert werden. Das Berechnen des Zwischenprodukts ist gleichbedeutend mit dem "sperren" oder "setzen" des 1. Faktors. Dies geschieht über Selektoren, die jeweils über die Bits des 2. Faktors gesteuert werden. Auf jeder Stufe wird demnach entweder der 1. Faktor zum bisherigen Zwischenergebnis hinzuaddiert, oder aber lediglich eine 0 addiert. Genauo wie bei der schriftlichen Multiplikation ist jede Stufe (Addierwerk und Selektor) nach links verschoben. 
 Anmerkung: Obiges Schaltnetz ist von unten nach oben zu betrachten. Halbaddierer (HA) finden im Gegensatz zu Volladdierern (FA) dann Einsatz, wenn lediglich 2 Bits zu verrechnen sind.
+
 ### Statusregister
 
-## Befehlssatz
+Jedes der einzelnen Flipflops stellt ein Statusregister dar, welches seine Information durch die entsprechende Kontrollleitung erhält. Die meisten Informationen stammen von der ALU, aber auch vom Inputbuffer (KEY-Flag, für "Keyboard") und dem Screenbuffer (PIX-Flag). Alle ALU-Flags werden ausschließlich bei einem ALU-Befehl aktualisiert (Takteingang durch UND-Gatter gesichert (1) ). Dagegen wird das PIX- und Key-Flag in jedem Taktzyklus aktualisiert (Bei ersterem kann dadurch der TPI-Befehl gespart werden, wenn die bedingte Sprunganweisung unmittelbar auf einen Befehl folgt, der die Pixelkoordinate auf dem Datenbus gelegt hat). Die Flags der Vergleichsoperationen (GR, EQ, SM) werden beim COMP-Befehl normal über den Komparator der ALU gesetzt. Bei einer sonstigen ALU-Operation allerdings wird das Berechnungsergebnis gegen 0 verglichen (2) und die Flags werden entsprechend gesetzt. Die Doppelnutzung spart zusätzliche Statusregister und in vielen Fällen auch einen expliziten COMP-Befehl. Das letzte Flag ist Teil der Realtimeclock (3). Diese setzt nach einer (bis jetzt manuell) definierten Anzahl von Taktzyklen das RLT-Flag. Gelöscht wird es durch Abfragen. 
+Jedes Flag-Register besitzt einen positiven Ausgang Q und einen negativen Ausgang Q Strich. Alle positiven und alle negativen Ausgänge sind in jeweils einem Multiplexer zusammengeführt. Bei einem JMT-Befehl wird der erste Multiplexer (4) aktiviert, ein gesetztes Flag hat bei seiner Auswahl eine 1 am Jump-Pin zur Folge. Bei einem JMF-Befehl (zweiter Multiplexer (5) )führt dagegen das gewählte Flag zu einer Sprunganweisung, wenn es nicht gesetzt ist. Das Steuerwerk ist der Übersicht halber in einer Teilschaltung zusammengefasst.
 
-## Assemblerprogrammierung: Snake
 
+
+## Assemblerprogrammierung
+
+Es folgt zunächt eine Begriffsabgrenzung: "Verständlich" für den Prozessor selbst ist lediglich **Maschienensprache** (binäre Folge aus einsen und nullen). Da diese für den Menschen schwer zu händeln ist, werden Befehle mit **Mnemonics** abgekürzt, die zusammen mit weiteren mnemonischen Abkürzungen für die zusätzlichen Argumente eine **Assemblersprache** bilden (auch kurz **Assembler** genannt). Die Umwandlung des Assembler-Codes in Maschienensprache übernimmt ein spezielles Programm, der **Assembler**.
 ## Einordnung
 
 Die bauliche Trennung von Daten- und Befehlsspeicher entspricht der Harvard-Architektur. In der Von-Neumann-Architektur dagegen liegen Daten und Befehle auf einem gemeinsamen Speicher vor. Letztere zeichnen sich durch eine hohe Universalität, weshalb fast alle modernen Hauptprozessoren dieser Gattung angehören. sind jedoch in ihrer Impementierung komplizierter. Erstere dagegen werden heutzutage in
  Vorteil ist, dass Befehle und benötigte Daten gleichzeitig statt hintereinander geladen und verarbeitet werden können.
+
+## Erarbeitungsweise und -Ablauf
+
+Vor dem Informatikunterricht: 
+* Aneignung von Grundlagennwissen und Erfahrung über Handyspiel
+* Entwurf kleinerer Schaltungen
+* 
+Ab dem Informatikunterricht: 
+* der Prozessor wird in etwas modifizierter Form zuendegebaut, um wieder mit der Materie vertraut zu werde
+
+Wie anfangs erwähnt, 
+
+

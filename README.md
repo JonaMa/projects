@@ -30,14 +30,17 @@ Logisim ist ein Logiksimulator, der dem Nutzer das Entwerfen und Simulieren von 
 **Tastatur:** Der Nutzer kann beim Anklicken des Bauteils über seine physische Tastatur Zeichen eingeben, die am Datenausgang in ASCII-Codierung (7-Bit) bereitliegen. Im Bauteil ist ein Eingabepuffer integriert.
  
 ## Grundlegende Funktionsweise
+
 Ein Prozessor ist eine in der Regel frei programmierbare elektrische Schaltung, die Daten basierend auf den programmierten Algorithmen verarbeitet und diese anschließend an weitere Komponenten übergibt oder Peripheriegeräte ansteuert (z.B. Bildschirm etc.). Neben der zahlreichen Verwendung als Mikrocontroller in eingebetteten Systemen (Waschmaschinen, CD-Spieler) stellt er in einem Computer als Hauptprozessor die zentrale Recheneinheit dar (englisch: CPU = *Central Processing Unit*).
 
 Grundsätzlich verknüpft man mit einem Prozessor Recheneinheiten, Speicherbausteine und diverse Kontrolllogik so miteinander, dass diese durch den Programmierer koordinierbar werden. So können komplexe Programme über mehrere Schritte hinweg abgearbeitet werden, die weit über einfache arithmetische Aufgaben hinaus reichen. Jeder Prozessor lässt sich dazu in Assemblersprache, einer sehr maschinennahen Programmiersprache, programmieren (siehe Abschnitt #Programmierung).
 
 ### Funktioneller Überblick
 
+![main](https://user-images.githubusercontent.com/31915930/33040662-0af28c64-ce3c-11e7-9382-dcde2b0931cf.PNG)
 
 Der Prozessor bildet den gesammten oberen Teil. Bildschirm und Eingabe gehören streng genommen nicht dazu.
+
 #### ROM (Befehlsspeicher) und RAM (Datenspeicher)
 
 Auf dem Befehlsspeicher befinden sich die auszuführenden Programme in Form einzelner Befehle. Daten, die durch Berechnungen oder Nutzereingaben anfallen, werden auf dem Datenspeicher abgelegt. Der Befehlsspeicher ist hier als *Festwertspeicher* konzipiert (*ROM* = *Read Only Memory*, freie Adressierung, jedoch kein Beschreiben möglich), während den Datenspeicher ein *Direktzugriffsspeicher/RAM* bildet (*RAM* = *Random-Access Memory*, freie Adressierung sowie Lesen und Schreiben möglich). Die bauliche Trennung von Daten- und Befehlsspeicher entspricht der *Harvard-Architektur* (siehe Abschnitt #Einordnung)
@@ -102,6 +105,7 @@ Es folgt nun eine Übersicht des Befehlssatzes. Die Kennnummern der ALU-Operatio
 
 ![befehlssatz](https://user-images.githubusercontent.com/31915930/33040313-f5e55bd6-ce3a-11e7-8c86-6dc4edc5bf69.PNG)
 
+![zusatztabelen](https://user-images.githubusercontent.com/31915930/33040388-3037d908-ce3b-11e7-8592-46de94005915.PNG)
 ### Takt
 
 Zeitlich wird der Prozessor über einen Takt koordiniert. In jedem Taktzyklus, bestehend aus steigender und fallender Taktflanke, wird ein neuer Befehl geladen, decodiert und ausgeführt.  
@@ -181,7 +185,7 @@ Für die Assemblersprache meines Assemblers gelten grob folgende Regeln:
 * Bei einem ALU-Befehl wird lediglich das Operationskürzel, gefolgt von Dr, So1 und So2, angegeben
 Durch einen höheren Programmieraufwand könnte die Sprache noch einfacher und intuitiver gestaltet werden. Der Code für den Assembler ist in folgendem Bildausschnitt zu sehen. Er gliedert sich grob in den oberen Datenabschnitt und den unteren Programmabschnitt. Dem Datenabschnitt fehlen noch einige Komponenten.
 
-
+![assembler](https://user-images.githubusercontent.com/31915930/33040499-8dddf70e-ce3b-11e7-8bb8-1cfb061f42e5.PNG)
 
 Folgendes kleines Programm soll den Umgang mit Assemblersprache demonstrieren. Es diente als Testprogramm für Snake und bewegt eine Schlange von links nach rechts, die durch eine beliebige Nutzereingabe um einen Pixel verlängert werden kann. Das Verschiebeverfahren ist zwar nicht sonderlich effizient, dafür ist die Verlängerung des Wurms aber sehr einfach zu bewerkstelligen. 
 

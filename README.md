@@ -1,4 +1,4 @@
-# Virtueller Bau eines Computers(1)
+# Virtueller Bau eines Computers in Logisim (erster Teil)
 
 ## Motivation
 
@@ -7,7 +7,27 @@ Mein Ziel der Arbeit war nicht der Nachbau eines bestehenden Prozessors, sondern
 
 ## Arbeitsumgebung
 
-Logisim ist ein Logiksimulator, der dem Nutzer das Entwerfen und Simulieren von logischen Schaltungen ermöglicht. Angewendet wird das Programm häufig an Universitäten zu Vorlesungs- und Lehrzwecken. Neben den einfachen Grundbausteinen wie Gatter und Flipflops verfügt Logisim auch über komplexere Bausteine wie Auswahlschaltungen, Rechenwerke oder Bauteile zur Ein-und Ausgabe. Die wichtigsten benutzten Komponenten sind auf folgendem Bild zu sehen:
+Logisim ist ein Logiksimulator, der dem Nutzer das Entwerfen und Simulieren von logischen Schaltungen ermöglicht. Angewendet wird das Programm häufig an Universitäten zu Vorlesungs- und Lehrzwecken. Neben den einfachen Grundbausteinen wie Gatter und Flipflops verfügt Logisim auch über komplexere Bausteine wie Auswahlschaltungen, Rechenwerke oder Bauteile zur Ein-und Ausgabe. Grundkenntnisse über  Logikgatter, Flipflops und dem Binär-/Hexadezimalsystem werden vorrausgesetzt. Andere, zum Teil Logisim-spezifische Teile/Konzepte werden kurz erläutert:
+
+### Konzepte
+
+**Teilschaltungen:** Größere Schaltungen lassen sich zu einer Teilschaltung zusammenfassen, dessen Aussehen frei bearbeitet werden kann. Der Datenaustausch erfolgt über...
+
+**Ein- und Ausgangspins:** Sie können lediglich 1 Bit, aber auch mehrere Bits groß sein.
+
+**Leitungsbündel:** Der Übersicht halber können mehrere Bits zu einem Leitungsündel zusammengefasst werden. Viele der vorgefertigten Logisim-Bausteine unterstützen das Verarbeiten von Leitungsbündeln. Im Gegensatz zu den grünen Einzelleitungen sind sie schwarz dargestellt.
+
+### Einige wichtige Bauteile
+
+**Multiplexer:** Wählt über eine Auswahlleitung eines von mehreren Eingängen aus und gibt ihn am Ausgang aus.
+
+**Decoder:** Besitzt einen Ausgang für jede mögliche Kombination der binären Kontrollleitung und schaltet diesen bei Auswahl auf 1.
+
+**Register:** Können einen Wert in definierter Bitbreite speichern
+
+**RAM, ROM:** Sie verfügen über mehrere Speicheradressen mit beliebiger Bitbreite.
+
+**Tastatur:** Der Nutzer kann beim Anklicken des Bauteils über seine physische Tastatur Zeichen eingeben, die am Datenausgang in ASCII-Codierung (7-Bit) bereitliegen. Im Bauteil ist ein Eingabepuffer integriert.
  
 ## Grundlegende Funktionsweise
 Ein Prozessor ist eine in der Regel frei programmierbare elektrische Schaltung, die Daten basierend auf den programmierten Algorithmen verarbeitet und diese anschließend an weitere Komponenten übergibt oder Peripheriegeräte ansteuert (z.B. Bildschirm etc.). Neben der zahlreichen Verwendung als Mikrocontroller in eingebetteten Systemen (Waschmaschinen, CD-Spieler) stellt er in einem Computer als Hauptprozessor die zentrale Recheneinheit dar (englisch: CPU = *Central Processing Unit*).
@@ -16,7 +36,7 @@ Grundsätzlich verknüpft man mit einem Prozessor Recheneinheiten, Speicherbaust
 
 ### Funktioneller Überblick
 
-![main](https://user-images.githubusercontent.com/31915930/32954671-0dd3043e-cbb4-11e7-8f57-0f6844a8839f.PNG)
+
 Der Prozessor bildet den gesammten oberen Teil. Bildschirm und Eingabe gehören streng genommen nicht dazu.
 #### ROM (Befehlsspeicher) und RAM (Datenspeicher)
 
@@ -97,19 +117,15 @@ Der obere Speicherbaustein stellt den RAM (1) mit einer Speicherkapazität von e
 
 ### Register
 
-Es sind in meinem Prozessor momentan 5 *General Purpose Register* Register (1-5) (AX-EX, das X steht für die Verwendung als GPR) sowie ein Adressregister (6) (P für *Pointer-Register*) vorhanden. Zusätzlich kann ein Zufallsgenerator (7) als Quelle angesprochen werden. Für die Auswahl des Quellregisters ist der 1. Multiplexer (8) verantwortlich, die Steuerung erfolgt mit dem Source-Bus. Mit der Auswahlschaltung kann ein beliebiges Register auf den Datenbus gelegt werden. Bei einem ALU-Befehl allerdings wird der Ausgang zum Datenbus gesperrt, sodass der Wert ausschließlich auf den 1. Direktbus (9) zur ALU gelegt wird. Das Sperren ist notwendig, da das Berechnungsergebnis über den Datenbus zurückgeschrieben wird. Mit dem 2. Multiplexer (10) kann ein 2. ALU-Operator über den weiteren Direktbus ausgewählt werden. Er wird beim ALU-Befehl über die unteren 5 Bits von *immidiate value* angesteuert.  
-Jedes Register verfügt neben dem Datenausgang über einen Dateneingang sowie einen Takt- und Enable-Eingang. Um in die Register zu speichern, wird das durch den Decoder (11) "enabelte" Register bei eintreffendem Takt mit dem Wert aus dem Datenbus überschrieben. Der Decoder wird über den Drain-Bus gesteuert.
-Der Multiplexer am Pointer-Register (12) wird über das 5. Opcode-Bit angesteuert und wählt entweder das Register selber oder *immidiate value* als Quelle für den Adressbus aus.
+Es sind in meinem Prozessor momentan 5 *General Purpose Register* Register (1) (AX-EX, das X steht für die Verwendung als GPR) sowie ein Adressregister (2) (P für *Pointer-Register*) vorhanden. Zusätzlich kann ein Zufallsgenerator (3) als Quelle angesprochen werden. Für die Auswahl des Quellregisters ist der 1. Multiplexer (4) verantwortlich, die Steuerung erfolgt mit dem Source-Bus. Mit der Auswahlschaltung kann ein beliebiges Register auf den Datenbus gelegt werden. Bei einem ALU-Befehl allerdings wird der Ausgang zum Datenbus gesperrt, sodass der Wert ausschließlich auf den 1. Direktbus (5) zur ALU gelegt wird. Das Sperren ist notwendig, da das Berechnungsergebnis über den Datenbus zurückgeschrieben wird. Mit dem 2. Multiplexer (6) kann ein 2. ALU-Operator über den weiteren Direktbus ausgewählt werden. Er wird beim ALU-Befehl über die unteren 5 Bits von *immidiate value* angesteuert.  Ein dritter Direktbus führt aus dem Register EX zum Framebuffer (Shift-Operator, siehe Framebuffer)
+Jedes Register verfügt neben dem Datenausgang über einen Dateneingang sowie einen Takt- und Enable-Eingang. Um in die Register zu speichern, wird das durch den Decoder (7) "enabelte" Register bei eintreffendem Takt mit dem Wert aus dem Datenbus überschrieben. Der Decoder wird über den Drain-Bus gesteuert.
+Der Multiplexer am Pointer-Register (8) wird über das 5. Opcode-Bit angesteuert und wählt entweder das Register selber oder *immidiate value* als Quelle für den Adressbus aus.
 
 
 ### ALU
 
 Alle verfügbaren Funktionen der ALU sind durch entsprechende Bausteine realisiert, die untereinander angeordnet sind und die Operanden A und B verrechnen (bzw. nur A modifizieren). Die Auswahl der Funktion geschieht durch einen Multiplexer (1), der durch die oberen 5 Bits von *immediate value* angesteuert wird. Bei der Multiplikation kann ein maximal 10 Bit großer Übertrag entstehen, bei der Division dagegen ein Rest. Diese werden in 2 separaten Speichern (2) abgelegt, die bei jeder Multiplikation/Division aktualisiert werden und über den Multipexer abrufbar sind. Weiterhin werden alle für die Statusregister wichtigen Zustände der ALU über einzelne Kontrolllleitungen rechts aus der Teilschaltung geführt. Das Steuerwerk der ALU (3) befindet sich links oben. 
 Der Aufbau der ALU ist eher demonstrativ und weniger realitätsnah. Operationen wie die Addition und die Subtraktion lassen sich beispielsweise in einer einzigen Schaltung realisieren. Weiterhin wurde hier nur auf Fertigbausteine von Logisim zurückgegriffen. Die Ausarbeitung der Bausteine auf Gatterebene ist zum Teil schon erfolgt und wird im zweiten Teil der Arbeit ausführlich erläutert.
-
-#### Addier-/Subtrahier-Werk
-
-
 
 ### Statusregister
 
@@ -118,24 +134,77 @@ Jedes Flag-Register besitzt einen positiven Ausgang Q und einen negativen Ausgan
 
 ### Framebuffer
 
-Der hier verwendete Bildschirm von Logisim umfasst 32*\32 Pixel und wird zeilenweise gesteuert, sodass sich 32 Eingänge mit einer Bitbreite von 32 Bit ergeben. Um jedes der insgesamt 1024 Pixel unabhängig steuern zu können, bedarf es ebenso 1024 Speicherzellen (da der Bildschirm nur zwei Farben darstellen kann, genügen D-FLipflops). Jede Zeile wird durch eine Teilschaltung (1) gesteuert, die wiederum 32 D-Flipflops beinhaltet. Jedes der Flipflops innerhalb einer Teilschaltung kann durch die zugehörige Kontrollleitung aktiviert werden, die dem Leitungsbündel vom ersten Decoder (1) entspringt. Dieser wird durch die oberen Bits von *immediate value* gesteuert und bestimmt die X-Koordinate. Gleichzeitig wird jedoch durch den zweiten Decoder (3) (über untere Bits von *ImV* gesteuert) immer nur eine der Teilschaltungen aktiviert. Somit wird die Y-Koordinate bestimmt. Das nun aktivierte Flipflop speichert bei Eintreffen des Taktes den Wert, der am allgemeinen Dateneingang (4) der Schaltung anliegt und über das Steuerwerk bestimmt wird (bei SPI eine 1, bei CLP eine 0). Zusätzlich besitzt die Schaltung eine Status-Leitung, die bei anliegender Pixelkoordinate den Status des gewählten Flipflops wiedergibt. Dieser wird direkt an das PIX-FLag weitergegeben.
+Der hier verwendete Bildschirm von Logisim umfasst 32*\32 Pixel und wird zeilenweise gesteuert, sodass sich 32 Eingänge mit einer Bitbreite von 32 Bit ergeben. Um jedes der insgesamt 1024 Pixel unabhängig steuern zu können, bedarf es ebenso 1024 Speicherzellen (da der Bildschirm nur zwei Farben darstellen kann, genügen D-FLipflops). Jede Zeile wird durch eine Teilschaltung (1) gesteuert, die wiederum 32 D-Flipflops beinhaltet. Jedes der Flipflops innerhalb einer Teilschaltung kann durch die zugehörige Kontrollleitung aktiviert werden, die dem Leitungsbündel vom ersten Decoder (2) Entringt. Dieser wird durch die oberen Bits von *immediate value* gesteuert und bestimmt die X-Koordinate. Gleichzeitig wird jedoch durch den zweiten Decoder (3) (über untere Bits von *ImV* gesteuert) immer nur eine der Teilschaltungen aktiviert. Somit wird die Y-Koordinate bestimmt. Das nun aktivierte Flipflop speichert bei Eintreffen des Taktes den Wert, der am allgemeinen Dateneingang (4) der Schaltung anliegt und über das Steuerwerk bestimmt wird (bei SPI eine 1, bei CLP eine 0). Zusätzlich besitzt die Schaltung eine Status-Leitung, die bei anliegender Pixelkoordinate den Status des gewählten Flipflops wiedergibt. Dieser wird direkt an das PIX-FLag weitergegeben.
 
 Ursprünglich für die Textausgabe konzipiert, kann auf den Wert vom Datenbus der Wert aus Register EX aufaddiert werden (5). Damit lassen sich ganze Pixelgruppen beim Setzen um eine konstante Weite und Höhe verschieben, ohne sie vorher umrechnen zu müssen. Die Funktion wird nur beim SPS- und CPS-Befehl aktiviert.
 
 ### Eingabecontroller
 
-Dieser wandelt die Eingaben vom Keyboard, die in ASCII-Codierung vorliegen, in kontinuierliche Zahlen um (momentan von 0-9, A-Z). Außerdem steuert er, wann ein Zeichen vom vom Keyboard-Buffer gelöscht wird.
+Dieser wandelt die Eingaben vom Keyboard, die in ASCII-Codierung vorliegen, mittels eines RAM in kontinuierliche Zahlen um (momentan von 0-9, A-Z). Außerdem steuert er, wann ein Zeichen vom Keyboard-Buffer gelöscht werden muss. ALLAS IN CORÜPRATIO 
 
 ### Reset-Controller
 
-Alle Speicher besitzen asynchrone (nicht vom Takt abhängige) Reseteingänge. Der Reset-Controller ist der Einfachheit halber zentral angelegt. Er wird über die Opcode-Bits und *ImV* gesteuert und setzt das entsprechende Bauteil über einzelne Kontrollleitungen zurück. 
+Alle Speicher besitzen asynchrone (nicht vom Takt abhängige) Rese-Eingänge. Der Reset-Controller ist der Einfachheit halber zentral angelegt. Er wird über die Opcode-Bits und *ImV* gesteuert und setzt die entsprechenden Bauteile über einzelne Kontrollleitungen zurück (in der Hauptschaltung sind diese in einem Leitungsbünedel zusammengefasst). Der Nutzer kann von außen durch den Reset-Taster den gesamten Computer zurücksetzen.
+
+### Steuerlogik
+
+Auf die Steuerlogik wurde in der bisherigen Dokumentation nur in dem Maße eingegangen, wie es zum grundlegenden Verständnis notwendig ist. Besonders in dem Arbeitsschritt der Fehleranalyse stellten sich viele Probleme heraus, die erst im Zusammenspiel mit den anderen Komponenten ersichtlich wurden und teiweise sehr spezielle Anforderungen an die Kontrolllogik stellten. So ist zum Beispiel an drei Stellen (Eingabecontroller, Realtimeclock, Framebuffer) der Einsatz einer "zeitlichen Prioritätsschaltung" (ZP) erforderlich. Sie besitzt 2 Eingänge und schaltet nur dann eine 1 am Ausgang , wenn der Erste vor dem Zweiten eintrifft (hier: der Erste immer Steuerleitung, der zweite immer der Takt) . Ein weiteres Beispiel stellt die Implementierung des bidirektionalen Datenbusses dar, bei dem spezielle Tristate-Puffer notwendig waren. 
 
 
 ## Assemblerprogrammierung
 
-Es folgt zunächt eine Begriffsabgrenzung: "Verständlich" für den Prozessor selbst ist lediglich **Maschinensprache** (binäre Folge aus Einsen und Nullen). Da diese für den Menschen schwer zu durchschauen ist, werden Befehle mit **Mnemonics** abgekürzt, die zusammen mit weiteren mnemonischen Abkürzungen für die zusätzlichen Argumente eine **Assemblersprache** bilden (auch kurz **Assembler** genannt). Die Umwandlung des Assembler-Codes in Maschinensprache übernimmt ein spezielles Programm, der **Assembler**. 
+Es folgt zunächt eine Begriffsabgrenzung: "Verständlich" für den Prozessor selbst ist lediglich **Maschinensprache** (binäre Folge aus Einsen und Nullen). Da diese für den Menschen schwer zu durchschauen ist, werden Befehle mit **Mnemonics** abgekürzt, die zusammen mit weiteren mnemonischen Abkürzungen für die zusätzlichen Argumente eine **Assemblersprache** bilden (auch kurz **Assembler** genannt). Die Umwandlung des Assembler-Codes in Maschinensprache übernimmt ein spezielles Programm, der eigentliche **Assembler**. 
+Die Assemblersprache kann je nach verwendetem Assembler bei gleicher Maschinensprache unterschiedlich ausfallen.
 
-Folgendes kleines Programm soll den Umgang mit Assemblersprache demonstrieren:
+Für die Assemblersprache meines Assemblers gelten grob folgende Regeln: 
+* Es müssen alle optionalen Argumente eines Befehls angegeben werden, außer fehlende ImV-Werte
+* Für die Reihenfolge gilt Folgendes:
+```Opcode; 0 oder 1 für das DAB, Drain und/oder Source, Festwert```
+* Wenn kein Drain oder Source benötigt wird, muss anstelle eine 0 angegeben werden
+* Bei einem ALU-Befehl wird lediglich das Operationskürzel, gefolgt von Dr, So1 und So2, angegeben
+Durch einen höheren Programmieraufwand könnte die Sprache noch einfacher und intuitiver gestaltet werden. Der Code für den Assembler ist in folgendem Bild zu sehen. Er gliedert sich grob in den oberen Datenabschnitt und den unteren Programmabschnitt. Dem Datenabschnitt fehlen noch einige Komponenten.
+
+
+
+Folgendes kleines Programm soll den Umgang mit Assemblersprache demonstrieren. Es diente als Testprogramm für Snake und bewegt eine Schlange von links nach rechts, die durch eine beliebige Nutzereingabe um einen Pixel verlängert werden kann. Das Verschiebeverfahren ist zwar nicht sonderlich effizient, dafür ist die Verlängerung des Wurms aber sehr einfach zu bewerkstelligen. 
+
+
+```
+spi 0 dv 130			       # Die drei Ausgangspixel werden gesetzt
+spi 0 dv 98
+spi 0 dv 66
+movi 0 ram dv 130		   # Die drei Pixelkoordinaten werden in die RAM gelegt
+movi 0 ram dv 98
+mov 0 ram dv 66
+mov 0 cx dv 2			      # In CX wird die Ausgangslänge des Wurmes -1 geschrieben
+
+mov 1 ax ram 0		  $1	 # Der "Kopf" der Schlage wird aus Adresse 0 der RAM nach AX verschoben
++x ax ax 0				        # Erhöhung der X-Koordinate ; anschließendes Setzen des "neuen Kopfes" und löschen des letzten "Schwanz-Pixels"
+spi 0 ax
+mov 0 p dx 
+clp 0 ram
+
+mov 0 p dv 0			       # Erhöhung der restlichen Pixelkoordinaten: Alle außer der letzten Koordinate werden auf den Stack 
+						                  geschoben und anschließend um 1 versetzt wieder in die ROM zurückgespeichert.
+movi 0 stk ram		  $2		# Auslesen in Schleifenform
+cmp 0 p dx					
+jmf 1 eq $2
+
+mov 0 ex dv 0
+
+movd 0 ram stk		  $3		# Zurückspeichern in Schleifenform
+cmp 0 p ex 
+jmf 1 eq $3
+
+mov 1 ram ax 0		     	# Der vorher berechnete "neue Kopf" wird in Adresse 0 der RAM gelegt
+
+jmf 1 key $4			       # Wenn eine Nutzereingabe vorhanden ist, werden die folgenden 2 Befehle bearbeitet, ansonsten übersprungen (if-                           Statement)
+inc dx dx 0				       # Inkrementieren des Registers mit der Wurmänge ; löschen des Inputbuffers
+res ipb
+
+jmp 1 0 $1			     $4 	# Wiederhole die Schleife
+
+```
 ## Einordnung
 
 Die bauliche Trennung von Daten- und Befehlsspeicher entspricht der *Harvard-Architektur*. In der *Von-Neumann-Architektur* dagegen liegen Daten und Befehle auf einem gemeinsamen Speicher vor. Da Programme sowohl viele Daten und wenig Befehle beinhalten können, oder aber umgekehrt, sind Prozessoren der Von-Neumann-Architektur universeller einsetzbar. Deshalb gehören fast alle modernen Hauptprozessoren dieser Gattung an, allerdings ist ihre Impementierung komplizierter. Vorteil der Harvard-Architektur ist, dass Befehle und benötigte Daten gleichzeitig statt hintereinander geladen und verarbeitet werden können. In eingebetteten Systemen findet dieser Prozessortyp häufig Anwendung als Signalprozessor, wenn bei bekannter Datenbreite Signale möglichst schnell verarbeitet werden müssen.
@@ -147,7 +216,7 @@ Bei der Angabe der Bitbreite eines Prozessors bezieht man sich vor allem auf die
 
 Bis zum Informatikunterricht:
 
-Wie in der Einleitung erwähnt, eignete ich mir durch ein Handyspiel (Survivalcraft)  viel Grundlagenwissen und Erfahrung über die Konstruktion logischer Schaltungen an. Den ersten Prozessor in Logisim baute ich auf Grundlage einer (unfertigen) Videoserie auf Youtube, in dem ich mir die Funktionsweise notierte und den Prozessor anhand meiner Notizen nachbaute. Anschließend startete ich vor etwa einem Jahr mit der Fertigstellung und Modifikation, das Projekt  wurde jedoch nicht fortgeführt.
+Wie in der Einleitung erwähnt, eignete ich mir durch ein Handyspiel (Survivalcraft)  viel Grundlagenwissen und Erfahrung über die Konstruktion logischer Schaltungen an. Den ersten Prozessor in Logisim baute ich auf Grundlage einer (unfertigen) Videoserie auf Youtube, in dem ich mir die Funktionsweise notierte und den Prozessor anhand meiner Notizen nachbaute. Anschließend startete ich vor etwa einem Jahr mit der Fertigstellung und Modifikation, das Projekt  wurde jedoch nicht fortgeführt. Nötige Programmierkenntnisse in Python erarbeitete ich mir ebenfalls zu der Zeit.
 
 Ab dem Informatikunterricht:
 
@@ -157,21 +226,18 @@ Kernstück des neuen Befehlssatzes war dabei das Konzept des bidirektionalen Dat
 Folgende Teilprojekte wurden zwar bearbeitet, aber bis jetzt nicht oder nur teilweise fertiggestellt:
 * Graphikprozessor
 * Programmierung von Snake in Assemblersprache
-* Rechenwerke
+* Rechenwerke (alle Grundrechenarten)
+* Befehlszähler
 * Pixelalphabet zur Textausgabe auf dem Bildschirm und das Programmkonzept
 
+Bei der Arbeit habe ich, ausgenommen von den Rechenwerken, nur auf Literatur zurückgegriffen, die sich mit gängigen Konzepten um das Thema befasst ( welche Arten von Bussystemen gibt es, wie könnte ein Opcode strukturiert sein etc.). Die technische Ausarbeitung des Assemblers, des Befehlssatzes und des Prozessors erfolgte komplett eigenständig und baute auf meiner bisherigen Arbeit auf.
 
 
 
 
 
-Vor dem Informatikunterricht: 
-* Aneignung von Grundlagennwissen und Erfahrung über Handyspiel
-* Entwurf kleinerer Schaltungen
-* 
-Ab dem Informatikunterricht: 
-* der Prozessor wird in etwas modifizierter Form zuendegebaut, um wieder mit der Materie vertraut zu werde
 
-Wie anfangs erwähnt, 
+
+
 
 

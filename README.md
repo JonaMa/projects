@@ -187,7 +187,7 @@ Durch einen höheren Programmieraufwand könnte die Sprache noch einfacher und i
 
 ![assembler](https://user-images.githubusercontent.com/31915930/33040499-8dddf70e-ce3b-11e7-8bb8-1cfb061f42e5.PNG)
 
-Folgendes kleines Programm soll den Umgang mit Assemblersprache demonstrieren. Es diente als Testprogramm für Snake und bewegt eine Schlange von links nach rechts, die durch eine beliebige Nutzereingabe um einen Pixel verlängert werden kann. Das Verschiebeverfahren ist zwar nicht sonderlich effizient, dafür ist die Verlängerung des Wurms aber sehr einfach zu bewerkstelligen. 
+Folgendes kleines Programm soll den Umgang mit Assemblersprache demonstrieren. Die mit $-Zeichen angegebenen Adressen müssten noch durch ablsolute dezimale Adresswerte ausgetauscht werden. Der Code diente als Testprogramm für Snake und bewegt eine Schlange von links nach rechts, die durch eine beliebige Nutzereingabe um einen Pixel verlängert werden kann. Das Verschiebeverfahren ist zwar nicht sonderlich effizient, dafür ist die Verlängerung des Wurms aber sehr einfach zu bewerkstelligen. 
 
 
 ```
@@ -219,7 +219,7 @@ jmf 1 eq $3
 
 mov 1 ram ax 0		     	    # Der vorher berechnete "neue Kopf" wird in Adresse 0 der RAM gelegt
 
-jmf 1 key $4			    # Wenn eine Nutzereingabe vorhanden ist, werden die folgenden 2 Befehle bearbeitet, ansonsten                           		      übersprungen (if-Statement) 
+jmf 1 key $4			    # Wenn eine Nutzereingabe vorhanden ist, werden die folgenden 2 Befehle bearbeitet, ansonsten   					      übersprungen (if-Statement)                          		      
 inc dx dx 0			    # Inkrementieren des Registers mit der Wurmänge ; löschen des Inputbuffers
 res ipb
 

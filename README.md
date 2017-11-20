@@ -219,7 +219,8 @@ jmf 1 eq $3
 
 mov 1 ram ax 0		     	    # Der vorher berechnete "neue Kopf" wird in Adresse 0 der RAM gelegt
 
-jmf 1 key $4			    # Wenn eine Nutzereingabe vorhanden ist, werden die folgenden 2 Befehle bearbeitet, ansonsten   					      übersprungen (if-Statement)                          		      
+jmf 1 key $4			    # Wenn eine Nutzereingabe vorhanden ist, werden die folgenden 2 Befehle bearbeitet, 
+				      ansonsten übersprungen (if-Statement)
 inc dx dx 0			    # Inkrementieren des Registers mit der Wurmänge ; löschen des Inputbuffers
 res ipb
 

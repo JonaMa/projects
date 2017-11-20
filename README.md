@@ -134,7 +134,7 @@ Jedes Flag-Register besitzt einen positiven Ausgang Q und einen negativen Ausgan
 
 ### Framebuffer
 
-Der hier verwendete Bildschirm von Logisim umfasst 32*\32 Pixel und wird zeilenweise gesteuert, sodass sich 32 Eingänge mit einer Bitbreite von 32 Bit ergeben. Um jedes der insgesamt 1024 Pixel unabhängig steuern zu können, bedarf es ebenso 1024 Speicherzellen (da der Bildschirm nur zwei Farben darstellen kann, genügen D-FLipflops). Jede Zeile wird durch eine Teilschaltung (1) gesteuert, die wiederum 32 D-Flipflops beinhaltet. Jedes der Flipflops innerhalb einer Teilschaltung kann durch die zugehörige Kontrollleitung aktiviert werden, die dem Leitungsbündel vom ersten Decoder (2) Entringt. Dieser wird durch die oberen Bits von *immediate value* gesteuert und bestimmt die X-Koordinate. Gleichzeitig wird jedoch durch den zweiten Decoder (3) (über untere Bits von *ImV* gesteuert) immer nur eine der Teilschaltungen aktiviert. Somit wird die Y-Koordinate bestimmt. Das nun aktivierte Flipflop speichert bei Eintreffen des Taktes den Wert, der am allgemeinen Dateneingang (4) der Schaltung anliegt und über das Steuerwerk bestimmt wird (bei SPI eine 1, bei CLP eine 0). Zusätzlich besitzt die Schaltung eine Status-Leitung, die bei anliegender Pixelkoordinate den Status des gewählten Flipflops wiedergibt. Dieser wird direkt an das PIX-FLag weitergegeben.
+Der hier verwendete Bildschirm von Logisim umfasst 32*\32 Pixel und wird zeilenweise gesteuert, sodass sich 32 Eingänge mit einer Bitbreite von 32 Bit ergeben. Um jedes der insgesamt 1024 Pixel unabhängig steuern zu können, bedarf es ebenso 1024 Speicherzellen (da der Bildschirm nur zwei Farben darstellen kann, genügen D-FLipflops). Jede Zeile wird durch eine Teilschaltung (1) gesteuert, die wiederum 32 D-Flipflops beinhaltet. Jedes der Flipflops innerhalb einer Teilschaltung kann durch die zugehörige Kontrollleitung aktiviert werden, die dem Leitungsbündel vom ersten Decoder (2) entspringt. Dieser wird durch die oberen Bits von *immediate value* gesteuert und bestimmt die X-Koordinate. Gleichzeitig wird jedoch durch den zweiten Decoder (3) (über untere Bits von *ImV* gesteuert) immer nur eine der Teilschaltungen aktiviert. Somit wird die Y-Koordinate bestimmt. Das nun aktivierte Flipflop speichert bei Eintreffen des Taktes den Wert, der am allgemeinen Dateneingang (4) der Schaltung anliegt und über das Steuerwerk bestimmt wird (bei SPI eine 1, bei CLP eine 0). Zusätzlich besitzt die Schaltung eine Status-Leitung, die bei anliegender Pixelkoordinate den Status des gewählten Flipflops wiedergibt. Dieser wird direkt an das PIX-FLag weitergegeben.
 
 Ursprünglich für die Textausgabe konzipiert, kann auf den Wert vom Datenbus der Wert aus Register EX aufaddiert werden (5). Damit lassen sich ganze Pixelgruppen beim Setzen um eine konstante Weite und Höhe verschieben, ohne sie vorher umrechnen zu müssen. Die Funktion wird nur beim SPS- und CPS-Befehl aktiviert.
 
@@ -148,7 +148,7 @@ Alle Speicher besitzen asynchrone (nicht vom Takt abhängige) Rese-Eingänge. De
 
 ### Steuerlogik
 
-Auf die Steuerlogik wurde in der bisherigen Dokumentation nur in dem Maße eingegangen, wie es zum grundlegenden Verständnis notwendig ist. Besonders in dem Arbeitsschritt der Fehleranalyse stellten sich viele Probleme heraus, die erst im Zusammenspiel mit den anderen Komponenten ersichtlich wurden und teiweise sehr spezielle Anforderungen an die Kontrolllogik stellten. So ist zum Beispiel an drei Stellen (Eingabecontroller, Realtimeclock, Framebuffer) der Einsatz einer "zeitlichen Prioritätsschaltung" (ZP) erforderlich. Sie besitzt 2 Eingänge und schaltet nur dann eine 1 am Ausgang , wenn der Erste vor dem Zweiten eintrifft (hier: der Erste immer Steuerleitung, der zweite immer der Takt) . Ein weiteres Beispiel stellt die Implementierung des bidirektionalen Datenbusses dar, bei dem spezielle Tristate-Puffer notwendig waren. 
+Auf die Steuerlogik wurde in der bisherigen Dokumentation nur in dem Maße eingegangen, wie es zum grundlegenden Verständnis notwendig ist. Besonders in dem Arbeitsschritt der Fehleranalyse stellten sich viele Probleme heraus, die erst im Zusammenspiel mit den anderen Komponenten ersichtlich wurden und teiweise sehr spezielle Anforderungen an die Kontrolllogik stellten. So ist zum Beispiel an drei Stellen (Eingabecontroller, Realtimeclock, Framebuffer) der Einsatz einer "zeitlichen Prioritätsschaltung" (ZP) erforderlich (unteres Bild). Sie besitzt 2 Eingänge und schaltet nur dann eine 1 am Ausgang , wenn der Erste vor dem Zweiten eintrifft (hier: der Erste immer Steuerleitung, der zweite immer der Takt) . Ein weiteres Beispiel stellt die Implementierung des bidirektionalen Datenbusses dar, bei dem spezielle Tristate-Puffer notwendig waren. 
 
 
 ## Assemblerprogrammierung
@@ -162,7 +162,7 @@ Für die Assemblersprache meines Assemblers gelten grob folgende Regeln:
 ```Opcode; 0 oder 1 für das DAB, Drain und/oder Source, Festwert```
 * Wenn kein Drain oder Source benötigt wird, muss anstelle eine 0 angegeben werden
 * Bei einem ALU-Befehl wird lediglich das Operationskürzel, gefolgt von Dr, So1 und So2, angegeben
-Durch einen höheren Programmieraufwand könnte die Sprache noch einfacher und intuitiver gestaltet werden. Der Code für den Assembler ist in folgendem Bild zu sehen. Er gliedert sich grob in den oberen Datenabschnitt und den unteren Programmabschnitt. Dem Datenabschnitt fehlen noch einige Komponenten.
+Durch einen höheren Programmieraufwand könnte die Sprache noch einfacher und intuitiver gestaltet werden. Der Code für den Assembler ist in folgendem Bildausschnitt zu sehen. Er gliedert sich grob in den oberen Datenabschnitt und den unteren Programmabschnitt. Dem Datenabschnitt fehlen noch einige Komponenten.
 
 
 
@@ -170,22 +170,22 @@ Folgendes kleines Programm soll den Umgang mit Assemblersprache demonstrieren. E
 
 
 ```
-spi 0 dv 130			       # Die drei Ausgangspixel werden gesetzt
+spi 0 dv 130			   # Die drei Ausgangspixel werden gesetzt
 spi 0 dv 98
 spi 0 dv 66
 movi 0 ram dv 130		   # Die drei Pixelkoordinaten werden in die RAM gelegt
 movi 0 ram dv 98
 mov 0 ram dv 66
-mov 0 cx dv 2			      # In CX wird die Ausgangslänge des Wurmes -1 geschrieben
+mov 0 cx dv 2			   # In CX wird die Ausgangslänge des Wurmes -1 geschrieben
 
-mov 1 ax ram 0		  $1	 # Der "Kopf" der Schlage wird aus Adresse 0 der RAM nach AX verschoben
-+x ax ax 0				        # Erhöhung der X-Koordinate ; anschließendes Setzen des "neuen Kopfes" und löschen des letzten "Schwanz-Pixels"
-spi 0 ax
+mov 1 ax ram 0		  $1	   # Der "Kopf" der Schlage wird aus Adresse 0 der RAM nach AX verschoben
++x ax ax 0			   # Erhöhung der X-Koordinate ; anschließendes Setzen des "neuen Kopfes" und löschen des 
+spi 0 ax			     letzten "Schwanz-Pixels"
 mov 0 p dx 
 clp 0 ram
 
-mov 0 p dv 0			       # Erhöhung der restlichen Pixelkoordinaten: Alle außer der letzten Koordinate werden auf den Stack 
-						                  geschoben und anschließend um 1 versetzt wieder in die ROM zurückgespeichert.
+mov 0 p dv 0			   # Erhöhung der restlichen Pixelkoordinaten: Alle außer der letzten Koordinate werden auf den Stack 
+				     geschoben und anschließend um 1 versetzt wieder in die ROM zurückgespeichert.
 movi 0 stk ram		  $2		# Auslesen in Schleifenform
 cmp 0 p dx					
 jmf 1 eq $2
@@ -196,13 +196,13 @@ movd 0 ram stk		  $3		# Zurückspeichern in Schleifenform
 cmp 0 p ex 
 jmf 1 eq $3
 
-mov 1 ram ax 0		     	# Der vorher berechnete "neue Kopf" wird in Adresse 0 der RAM gelegt
+mov 1 ram ax 0		     	    # Der vorher berechnete "neue Kopf" wird in Adresse 0 der RAM gelegt
 
-jmf 1 key $4			       # Wenn eine Nutzereingabe vorhanden ist, werden die folgenden 2 Befehle bearbeitet, ansonsten übersprungen (if-                           Statement)
-inc dx dx 0				       # Inkrementieren des Registers mit der Wurmänge ; löschen des Inputbuffers
+jmf 1 key $4			    # Wenn eine Nutzereingabe vorhanden ist, werden die folgenden 2 Befehle bearbeitet, ansonsten                           		      übersprungen (if-Statement) 
+inc dx dx 0			    # Inkrementieren des Registers mit der Wurmänge ; löschen des Inputbuffers
 res ipb
 
-jmp 1 0 $1			     $4 	# Wiederhole die Schleife
+jmp 1 0 $1		  $4 	    # Wiederhole die Schleife
 
 ```
 ## Einordnung

@@ -100,22 +100,28 @@ Opcode+ACB   Drain   Source    immidiate value
 
 Es folgt nun eine Übersicht des Befehlssatzes. Die Kennnummern der ALU-Operationen kann man der 2. Tabelle entnehmen. Die Kennnummern aller Speicher sind in der 3. Tabelle "Memory-Table" vermerkt.
 
+![befehlssatz](https://user-images.githubusercontent.com/31915930/33040313-f5e55bd6-ce3a-11e7-8c86-6dc4edc5bf69.PNG)
+
 ### Takt
 
 Zeitlich wird der Prozessor über einen Takt koordiniert. In jedem Taktzyklus, bestehend aus steigender und fallender Taktflanke, wird ein neuer Befehl geladen, decodiert und ausgeführt.  
 
 ### ROM
 
-Bild
+![rom](https://user-images.githubusercontent.com/31915930/33040379-2bbcba92-ce3b-11e7-990b-44ff67598a37.jpg)
 
 Die eigentliche ROM (1) besitzt links einen Adresseingang und rechts einen Datenausgang. Die Adressen stammen vom *Instruction Pointer*(2) (Befehlszähler). Im Normalbetrieb zählt dieser Aufwärts und ruft nach der Ausführung des alten Befehls bei steigender Taktflanke den neuen Befehl auf. Bei der Ausführung von Sprungbefehlen durch den Pin "jump" wird der alte Zählerwert durch den Wert vom Adressbus überschrieben. Mit einer Adressbreite von 10 Bit können hier 1024 Byte adressiert werden (1 Byte ist hier in seiner alternativen Bedeutung als "kleinste adressierbare Einheit" definiert, also als 10 Bit (durch ALU-Breite bestimmt)).
 Rechts findet eine Aufsplittung des Maschinenbefehls in ihre Funktionen statt. Weiterhin kann hier bei Auswahl von *immidiate value* als Quelle (3) dessen Bits auf den Datenbus gelegt werden. 
 
 ### RAM und Stack
 
+![ram_stack](https://user-images.githubusercontent.com/31915930/33040350-18820afe-ce3b-11e7-8bec-6a195453a189.jpg)
+
 Der obere Speicherbaustein stellt den RAM (1) mit einer Speicherkapazität von ebenfalls 1024 Byte dar. Adressiert wird er über den Adressbus. Der Stack (2) wird hingegen über den Stackpointer adressiert, der beim Speichern inkrementiert und beim Lesen dekrementiert wird, um das bereits erwähnte FIFO-Prinzip zu gewährleisten. Wie der RAM besitzt der Stack einen gemeinsamen Speicher- und Ladeport, der mit dem Datenbus verbunden ist. Ob und welches der Bauteile als Senke oder Quelle angesprochen wird, ist durch den Drain-und Sourcebus festgelegt. Die Ansteuerung von RAM und Stack erfolgt über die Kontrolllogik, die sich im linken Teil der Schaltung befindet. 
 
 ### Register
+
+![reg](https://user-images.githubusercontent.com/31915930/33040355-1c3fb18c-ce3b-11e7-9238-b068fe6a7a3a.jpg)
 
 Es sind in meinem Prozessor momentan 5 *General Purpose Register* Register (1) (AX-EX, das X steht für die Verwendung als GPR) sowie ein Adressregister (2) (P für *Pointer-Register*) vorhanden. Zusätzlich kann ein Zufallsgenerator (3) als Quelle angesprochen werden. Für die Auswahl des Quellregisters ist der 1. Multiplexer (4) verantwortlich, die Steuerung erfolgt mit dem Source-Bus. Mit der Auswahlschaltung kann ein beliebiges Register auf den Datenbus gelegt werden. Bei einem ALU-Befehl allerdings wird der Ausgang zum Datenbus gesperrt, sodass der Wert ausschließlich auf den 1. Direktbus (5) zur ALU gelegt wird. Das Sperren ist notwendig, da das Berechnungsergebnis über den Datenbus zurückgeschrieben wird. Mit dem 2. Multiplexer (6) kann ein 2. ALU-Operator über den weiteren Direktbus ausgewählt werden. Er wird beim ALU-Befehl über die unteren 5 Bits von *immidiate value* angesteuert.  Ein dritter Direktbus führt aus dem Register EX zum Framebuffer (Shift-Operator, siehe Framebuffer)
 Jedes Register verfügt neben dem Datenausgang über einen Dateneingang sowie einen Takt- und Enable-Eingang. Um in die Register zu speichern, wird das durch den Decoder (7) "enabelte" Register bei eintreffendem Takt mit dem Wert aus dem Datenbus überschrieben. Der Decoder wird über den Drain-Bus gesteuert.
@@ -124,15 +130,21 @@ Der Multiplexer am Pointer-Register (8) wird über das 5. Opcode-Bit angesteuert
 
 ### ALU
 
+![alu](https://user-images.githubusercontent.com/31915930/33040308-f1efa572-ce3a-11e7-8c0c-a4d63efa3ce2.jpg)
+
 Alle verfügbaren Funktionen der ALU sind durch entsprechende Bausteine realisiert, die untereinander angeordnet sind und die Operanden A und B verrechnen (bzw. nur A modifizieren). Die Auswahl der Funktion geschieht durch einen Multiplexer (1), der durch die oberen 5 Bits von *immediate value* angesteuert wird. Bei der Multiplikation kann ein maximal 10 Bit großer Übertrag entstehen, bei der Division dagegen ein Rest. Diese werden in 2 separaten Speichern (2) abgelegt, die bei jeder Multiplikation/Division aktualisiert werden und über den Multipexer abrufbar sind. Weiterhin werden alle für die Statusregister wichtigen Zustände der ALU über einzelne Kontrolllleitungen rechts aus der Teilschaltung geführt. Das Steuerwerk der ALU (3) befindet sich links oben. 
 Der Aufbau der ALU ist eher demonstrativ und weniger realitätsnah. Operationen wie die Addition und die Subtraktion lassen sich beispielsweise in einer einzigen Schaltung realisieren. Weiterhin wurde hier nur auf Fertigbausteine von Logisim zurückgegriffen. Die Ausarbeitung der Bausteine auf Gatterebene ist zum Teil schon erfolgt und wird im zweiten Teil der Arbeit ausführlich erläutert.
 
 ### Statusregister
 
+![flag](https://user-images.githubusercontent.com/31915930/33040320-fb7cc8ae-ce3a-11e7-8b06-fc37ca97cdee.jpg)
+
 Jedes der einzelnen Flipflops stellt ein Statusregister dar, welches seine Information durch die entsprechende Kontrollleitung erhält. Die meisten Informationen stammen von der ALU, aber auch vom Inputbuffer (KEY-Flag, für "Keyboard") und dem Screenbuffer (PIX-Flag). Alle ALU-Flags werden ausschließlich bei einem ALU-Befehl aktualisiert (Takteingang durch UND-Gatter gesichert (1) ). Dagegen wird das PIX- und Key-Flag in jedem Taktzyklus aktualisiert (Bei ersterem kann dadurch der TPI-Befehl gespart werden, wenn die bedingte Sprunganweisung unmittelbar auf einen Befehl folgt, der die Pixelkoordinate auf dem Datenbus gelegt hat). Die Flags der Vergleichsoperationen (GR, EQ, SM) werden beim COMP-Befehl normal über den Komparator der ALU gesetzt. Bei einer sonstigen ALU-Operation allerdings wird das Berechnungsergebnis gegen 0 verglichen (2) und die Flags werden entsprechend gesetzt. Die Doppelnutzung spart zusätzliche Statusregister und in vielen Fällen auch einen expliziten COMP-Befehl. Das letzte Flag ist Teil der Realtimeclock (3). Diese setzt nach einer (bis jetzt manuell) definierten Anzahl von Taktzyklen das RLT-Flag. Gelöscht wird es durch Abfragen. 
 Jedes Flag-Register besitzt einen positiven Ausgang Q und einen negativen Ausgang Q Strich. Alle positiven und alle negativen Ausgänge sind in jeweils einem Multiplexer zusammengeführt. Bei einem JMT-Befehl wird der erste Multiplexer (4) aktiviert, ein gesetztes Flag hat bei seiner Auswahl eine 1 am Jump-Pin zur Folge. Bei einem JMF-Befehl (zweiter Multiplexer (5) )führt dagegen das gewählte Flag zu einer Sprunganweisung, wenn es nicht gesetzt ist. Das Steuerwerk ist der Übersicht halber in einer Teilschaltung zusammengefasst.
 
 ### Framebuffer
+
+![frb](https://user-images.githubusercontent.com/31915930/33040329-0700e0d4-ce3b-11e7-9c43-fb46832c80fa.jpg)
 
 Der hier verwendete Bildschirm von Logisim umfasst 32*\32 Pixel und wird zeilenweise gesteuert, sodass sich 32 Eingänge mit einer Bitbreite von 32 Bit ergeben. Um jedes der insgesamt 1024 Pixel unabhängig steuern zu können, bedarf es ebenso 1024 Speicherzellen (da der Bildschirm nur zwei Farben darstellen kann, genügen D-FLipflops). Jede Zeile wird durch eine Teilschaltung (1) gesteuert, die wiederum 32 D-Flipflops beinhaltet. Jedes der Flipflops innerhalb einer Teilschaltung kann durch die zugehörige Kontrollleitung aktiviert werden, die dem Leitungsbündel vom ersten Decoder (2) entspringt. Dieser wird durch die oberen Bits von *immediate value* gesteuert und bestimmt die X-Koordinate. Gleichzeitig wird jedoch durch den zweiten Decoder (3) (über untere Bits von *ImV* gesteuert) immer nur eine der Teilschaltungen aktiviert. Somit wird die Y-Koordinate bestimmt. Das nun aktivierte Flipflop speichert bei Eintreffen des Taktes den Wert, der am allgemeinen Dateneingang (4) der Schaltung anliegt und über das Steuerwerk bestimmt wird (bei SPI eine 1, bei CLP eine 0). Zusätzlich besitzt die Schaltung eine Status-Leitung, die bei anliegender Pixelkoordinate den Status des gewählten Flipflops wiedergibt. Dieser wird direkt an das PIX-FLag weitergegeben.
 
@@ -140,9 +152,13 @@ Ursprünglich für die Textausgabe konzipiert, kann auf den Wert vom Datenbus de
 
 ### Eingabecontroller
 
+![inp ctrl](https://user-images.githubusercontent.com/31915930/33040337-0d5c8f8c-ce3b-11e7-9a52-86dd688f9f8e.jpg)
+
 Dieser wandelt die Eingaben vom Keyboard, die in ASCII-Codierung vorliegen, mittels eines RAM in kontinuierliche Zahlen um (momentan von 0-9, A-Z). Außerdem steuert er, wann ein Zeichen vom Keyboard-Buffer gelöscht werden muss. ALLAS IN CORÜPRATIO 
 
 ### Reset-Controller
+
+![reset](https://user-images.githubusercontent.com/31915930/33040373-247ccde4-ce3b-11e7-9472-074d34dccdc9.jpg)
 
 Alle Speicher besitzen asynchrone (nicht vom Takt abhängige) Rese-Eingänge. Der Reset-Controller ist der Einfachheit halber zentral angelegt. Er wird über die Opcode-Bits und *ImV* gesteuert und setzt die entsprechenden Bauteile über einzelne Kontrollleitungen zurück (in der Hauptschaltung sind diese in einem Leitungsbünedel zusammengefasst). Der Nutzer kann von außen durch den Reset-Taster den gesamten Computer zurücksetzen.
 
@@ -150,6 +166,7 @@ Alle Speicher besitzen asynchrone (nicht vom Takt abhängige) Rese-Eingänge. De
 
 Auf die Steuerlogik wurde in der bisherigen Dokumentation nur in dem Maße eingegangen, wie es zum grundlegenden Verständnis notwendig ist. Besonders in dem Arbeitsschritt der Fehleranalyse stellten sich viele Probleme heraus, die erst im Zusammenspiel mit den anderen Komponenten ersichtlich wurden und teiweise sehr spezielle Anforderungen an die Kontrolllogik stellten. So ist zum Beispiel an drei Stellen (Eingabecontroller, Realtimeclock, Framebuffer) der Einsatz einer "zeitlichen Prioritätsschaltung" (ZP) erforderlich (unteres Bild). Sie besitzt 2 Eingänge und schaltet nur dann eine 1 am Ausgang , wenn der Erste vor dem Zweiten eintrifft (hier: der Erste immer Steuerleitung, der zweite immer der Takt) . Ein weiteres Beispiel stellt die Implementierung des bidirektionalen Datenbusses dar, bei dem spezielle Tristate-Puffer notwendig waren. 
 
+![zp](https://user-images.githubusercontent.com/31915930/33040383-2db4335c-ce3b-11e7-8dc8-f7a0da6e747c.jpg)
 
 ## Assemblerprogrammierung
 

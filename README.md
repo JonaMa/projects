@@ -27,13 +27,15 @@ Logisim ist ein Logiksimulator, der dem Nutzer das Entwerfen und Simulieren von 
 
 **RAM, ROM:** Sie verfügen über mehrere Speicheradressen mit beliebiger Bitbreite.
 
+**Komparator:** Er wird neben seiner eigentlichen Funktion für die logische Vergleichsoperation oft für das decodieren von Befehlen verwendet, in Verbindung mit einer entsprechenden Konstante.
+
 **Tastatur:** Der Nutzer kann beim Anklicken des Bauteils über seine physische Tastatur Zeichen eingeben, die am Datenausgang in ASCII-Codierung (7-Bit) bereitliegen. Im Bauteil ist ein Eingabepuffer integriert.
  
 ## Grundlegende Funktionsweise
 
 Ein Prozessor ist eine in der Regel frei programmierbare elektrische Schaltung, die Daten basierend auf den programmierten Algorithmen verarbeitet und diese anschließend an weitere Komponenten übergibt oder Peripheriegeräte ansteuert (z.B. Bildschirm etc.). Neben der zahlreichen Verwendung als Mikrocontroller in eingebetteten Systemen (Waschmaschinen, CD-Spieler) stellt er in einem Computer als Hauptprozessor die zentrale Recheneinheit dar (englisch: CPU = *Central Processing Unit*).
 
-Grundsätzlich verknüpft man mit einem Prozessor Recheneinheiten, Speicherbausteine und diverse Kontrolllogik so miteinander, dass diese durch den Programmierer koordinierbar werden. So können komplexe Programme über mehrere Schritte hinweg abgearbeitet werden, die weit über einfache arithmetische Aufgaben hinaus reichen. Jeder Prozessor lässt sich dazu in Assemblersprache, einer sehr maschinennahen Programmiersprache, programmieren (siehe Abschnitt #Programmierung).
+Grundsätzlich verknüpft man mit einem Prozessor Recheneinheiten, Speicherbausteine und diverse Kontrolllogik so miteinander, dass diese durch den Programmierer koordinierbar werden. So können komplexe Programme über mehrere Schritte hinweg abgearbeitet werden, die weit über einfache arithmetische Aufgaben hinaus reichen. Jeder Prozessor lässt sich dazu in Assemblersprache, einer sehr maschinennahen Programmiersprache, programmieren (siehe Abschnitt #Assemblerprogrammierung)
 
 ### Funktioneller Überblick
 
@@ -55,7 +57,7 @@ Die Statusregister oder kurz Flags sind einzelne Flipflops, die bestimmte Zustä
 
 #### Register
 
-Alle Daten, die sich in unmittelbarer Bearbeitung befinden, werden für den schnellen Abruf in einzelnen Speichern, den sog. Registern zwischengespeichert. Es existieren neben den *GPRs* (*General Purpose Register*, universell nutzbar) auch Spezialregister, wie einem Adress-Register (siehe Abschnitt #DÜ#Reg).
+Alle Daten, die sich in unmittelbarer Bearbeitung befinden, werden für den schnellen Abruf in einzelnen Speichern, den sog. Registern zwischengespeichert. Es existieren neben den *GPRs* (*General Purpose Register*, universell nutzbar) auch Spezialregister, wie einem Adress-Register (siehe Abschnitt #Technischer Überblick/Register).
 
 #### Stack
 
@@ -101,7 +103,7 @@ Opcode+ACB   Drain   Source    immidiate value
 
 **Adressbus Controll Bit/ACB:** Das letzte Bit des Opcodes ist für eine Spezialfunktion reserviert. Ein Setzen des Bits bewirkt, das *immediate value* auf den Adressbus gelegt wird. Bei nicht gesetztem Bit wird als Quelle für den Adressbus das Adressregister ausgewählt. Der Programmierer kann dadurch direkt aus bestimmten Adressen der RAM speichern bzw. laden oder explizite Sprungadressen für die ROM angegeben. Folgende Befehle sind damit möglich: "Verschiebe nach Register A den Wert aus Adresse 17 der RAM" oder "springe zu Adresse 42 der ROM" (bedeutet den Sprung zu einem anderen Programmteil).
 
-Es folgt nun eine Übersicht des Befehlssatzes. Die Kennnummern der ALU-Operationen kann man der 2. Tabelle entnehmen. Die Kennnummern aller Speicher sind in der 3. Tabelle "Memory-Table" vermerkt.
+Es folgt nun eine Übersicht des Befehlssatzes. Die Kennnummern der ALU-Operationen kann man der 3. Tabelle entnehmen. Die Kennnummern aller Speicher sind in der 2. Tabelle "Memory-Table" vermerkt.
 
 ![befehlssatz](https://user-images.githubusercontent.com/31915930/33040313-f5e55bd6-ce3a-11e7-8c86-6dc4edc5bf69.PNG)
 

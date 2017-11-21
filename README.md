@@ -185,6 +185,8 @@ Für die Assemblersprache meines Assemblers gelten grob folgende Regeln:
 ```Opcode; 0 oder 1 für das DAB, Drain und/oder Source, Festwert```
 * Wenn kein Drain oder Source benötigt wird, muss anstelle eine 0 angegeben werden
 * Bei einem ALU-Befehl wird lediglich das Operationskürzel, gefolgt von Dr, So1 und So2, angegeben
+* ImV als Quelle wird momentan noch durch "dv" abgekürzt
+
 Durch einen höheren Programmieraufwand könnte die Sprache noch einfacher und intuitiver gestaltet werden. Der Code für den Assembler ist in folgendem Bildausschnitt zu sehen. Er gliedert sich grob in den oberen Datenabschnitt und den unteren Programmabschnitt. Dem Datenabschnitt fehlen noch einige Komponenten.
 
 ![assembler](https://user-images.githubusercontent.com/31915930/33040499-8dddf70e-ce3b-11e7-8bb8-1cfb061f42e5.PNG)

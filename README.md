@@ -160,7 +160,7 @@ Ursprünglich für die Textausgabe konzipiert, kann auf den Wert vom Datenbus de
 
 ![inp ctrl](https://user-images.githubusercontent.com/31915930/33040337-0d5c8f8c-ce3b-11e7-9a52-86dd688f9f8e.jpg)
 
-Dieser wandelt die Eingaben vom Keyboard, die in ASCII-Codierung vorliegen, mittels eines RAM in kontinuierliche Zahlen um (momentan von 0-9, A-Z). Außerdem steuert er, wann ein Zeichen vom Keyboard-Buffer gelöscht werden muss. ALLAS IN CORÜPRATIO 
+Dieser wandelt die Eingaben vom Keyboard, die in ASCII-Codierung vorliegen, mittels eines RAM in kontinuierliche Zahlen um (momentan von 0-9, A-Z). Außerdem steuert er, wann ein Zeichen vom Keyboard-Buffer gelöscht werden muss.  
 
 ### Reset-Controller
 

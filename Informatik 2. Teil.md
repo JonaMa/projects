@@ -22,29 +22,29 @@ Da das Programmieren in Assemblersprache schnell unübersichtlich wurde, erstell
 
 
 ```
-spi 0 dv 66			    } Setzen der Startpixel 
+spi 0 dv 66       } Setzen der Startpixel 
 spi 0 dv 98
 spi 0 dv 130
-movi 0 ram dv 66	  } Laden in Datenspeicher
+movi 0 ram dv 66  } Laden in Datenspeicher
 movi 0 ram dv 98
 mov 0 ram dv 130
 
-mov 0 cx dv 2		    #"Wurmlänge"-1
-mov 0 ex dv	528 	  #erster Pixfeed
+mov 0 cx dv 2     #"Wurmlänge"-1
+mov 0 ex dv	528   #erster Pixfeed
 spi 0 ex
-mov 0 p dv 2		    #"Kopfposition" in P gespeichert, um unmittelbaren Zugriff auf den Kopf- und Endpixel zu haben
+mov 0 p dv 2      #"Kopfposition" in P gespeichert, um unmittelbaren Zugriff auf den Kopf- und Endpixel zu haben
 
-jmf 1 key $1		    $1 #Taste drücken um zu starten
+jmf 1 key $1      $1 #Taste drücken um zu starten
 
-===============		  } Hauptschleife
+===============   } Hauptschleife
 ===============
 
-mov 0 bx ram		    $2 #Kopfpixel nach BX zur Bearbeitung
-jmf 1 key $3		    #Einlesen des IPBs überspringen, wenn kein Eingabe vorhanden
+mov 0 bx ram$2    #Kopfpixel nach BX zur Bearbeitung
+jmf 1 key $3      #Einlesen des IPBs überspringen, wenn kein Eingabe vorhanden
 
-mov 0 dx ipb 		    #Einlesen
+mov 0 dx ipb      #Einlesen
 
-mov 0 ax dv "w"		   $3  } Prüfen von DX ("Bewegungsrichtung") auf 4 mögliche Zustände
+mov 0 ax dv "w"   $3  } Prüfen von DX ("Bewegungsrichtung") auf 4 mögliche Zustände
 cmp 0 ax dx
 jmt 1 eq $4
 
@@ -58,40 +58,40 @@ jmt 1 eq $6
 
 mov 0 ax dv "d" 
 ---------------
-+x bx bx 0			    #"d"  } Berechnung des neuen Kopfpixels basierend auf "Bewegungsrichtung"
++x bx bx 0        #"d"  } Berechnung des neuen Kopfpixels basierend auf "Bewegungsrichtung"
 jmp 1 0 $7
-+y bx bx 0			    $4 #"w"
++y bx bx 0        $4 #"w"
 jmp 1 0 $7
--x bx bx 0			    $5 #"a"
+-x bx bx 0        $5 #"a"
 jmp 1 0 $7
--y bx bx 0			    $6 #"s"
+-y bx bx 0        $6 #"s"
 
 ===============
 
-tpi 0 bx			      $7 #Kopfpixel bereits gesetzt?
+tpi 0 bx$7        #Kopfpixel bereits gesetzt?
 jmt 1 pix $10
 
 ---------------
-cmp 0 cx p			    #"Kopfposition" == "Wurmlänge"?
+cmp 0 cx p        #"Kopfposition" == "Wurmlänge"?
 jmt 1 eq $8
 
-inc p p 0			      #"Kopfposition"+1
+inc p p 0         #"Kopfposition"+1
 jmp 1 0 $9
-mov 0 p dv 0		    $8 #"Kopfposition"=0
+mov 0 p dv 0      $8 #"Kopfposition"=0
 
-clp 0 ram			      $9 #Löschen des Endpixels
+clp 0 ram         $9 #Löschen des Endpixels
 jmp 1 0 $14
 
-===============		  } Folgender Abschnitt: Vorgehen beim Treffen auf ein gesetztes Pixel
+===============   } Folgender Abschnitt: Vorgehen beim Treffen auf ein gesetztes Pixel
 
-cmp 0 bx ex			    $10	#Kopfpixel == Pixfeed?
-jmf 1 eq $16		    #wenn nicht, Spiel beenden
+cmp 0 bx ex       $10	#Kopfpixel == Pixfeed?
+jmf 1 eq          $16#wenn nicht, Spiel beenden
 
----------------		  } Verschieben aller Einträge über Kopfposition nach rechts (RAM)
+---------------   } Verschieben aller Einträge über Kopfposition nach rechts (RAM)
 inc p p 0
 mov 0 ax p
 
-movi 0 stk ram		  $11 } Auslesen in Schleifenform
+movi 0 stk ram    $11 } Auslesen in Schleifenform
 cmp 0 p cx
 jmf 1 gr $11
 

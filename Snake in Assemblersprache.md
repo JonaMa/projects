@@ -28,7 +28,7 @@ Falls die Schlange auf einen gesetzten Pixel trifft, wird geprüft, ob es sich d
 
 ### Programmablaufplan (PAP)<a name="2.1"></a>
 
-Da das Programmieren in Assemblersprache schnell unübersichtlich wurde, erstellte ich mit mit PapDesigner vorab einen PAP, nach welchem ich das Spiel programmierte. 
+Da das Programmieren in Assemblersprache schnell unübersichtlich wurde, erstellte ich mit mit PapDesigner vorab einen groben PAP, nach welchem ich das Spiel programmierte. 
 
 ![image](https://user-images.githubusercontent.com/31915930/36232327-aa944b0c-11e1-11e8-94c6-d0355de4ba2c.png)
 

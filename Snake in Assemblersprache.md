@@ -53,7 +53,7 @@ jmf 1 key $1      $1 #Taste drücken um zu starten
 ===============   } Hauptschleife
 ===============
 
-mov 0 bx ram$2    #Kopfpixel nach BX zur Bearbeitung
+mov 0 bx ram      $2 #Kopfpixel nach BX zur Bearbeitung
 jmf 1 key $3      #Einlesen des IPBs überspringen, wenn kein Eingabe vorhanden
 
 mov 0 dx ipb      #Einlesen
@@ -82,7 +82,7 @@ jmp 1 0 $7
 
 ===============
 
-tpi 0 bx$7        #Kopfpixel bereits gesetzt?
+tpi 0 bx          $7  #Kopfpixel bereits gesetzt?
 jmt 1 pix $10
 
 ---------------
@@ -99,7 +99,7 @@ jmp 1 0 $14
 ===============   } Folgender Abschnitt: Vorgehen beim Treffen auf ein gesetztes Pixel
 
 cmp 0 bx ex       $10	#Kopfpixel == Pixfeed?
-jmf 1 eq          $16#wenn nicht, Spiel beenden
+jmf 1 eq $16      #wenn nicht, Spiel beenden
 
 ---------------   } Verschieben aller Einträge über Kopfposition nach rechts (RAM)
 inc p p 0

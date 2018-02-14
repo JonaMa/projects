@@ -20,13 +20,17 @@ Besonders in der Anfangszeit arbeitete ich noch an den Rechenwerken weiter, welc
 
 ## Snake<a name="2"></a>
 
-In der vorigen Arbeit wurde eine Testversion von Snake vorgestellt, bei der jedoch jeder Pixel der Schlange neu berechnet wurde. Um bei der vergleichsweise langsamen Simulationsgeschwindigkeit des Prozessors von ca. 80-120 Hz ein adäquates Spielerlebnis zu schaffen, berechnet der neue Algorithmus nur den Kopf- und Endpixel neu. Dafür wird der der Eintrag des Endpixes stets mit dem neuen Kopfpixel überschrieben, der sich dadurch nicht mehr an einer festen Speicheradresse der RAM befindet sondern durch alle benutzten Adressen rotiert. Bei einer Erhöhung der Wurmlänge müssen gegebenenfalls alle Einträge über dem Kopfpixel verschoben werden, um die Reihenfolge zu waren. 
+In der vorigen Arbeit wurde eine Testversion von Snake vorgestellt, bei der jedoch jeder Pixel der Schlange neu berechnet wurde. Um bei der vergleichsweise langsamen Simulationsgeschwindigkeit des Prozessors von ca. 80-120 Hz ein adäquates Spielerlebnis zu schaffen, berechnet der neue Algorithmus nur den Kopf- und Endpixel neu. Dafür wird der der Eintrag des Endpixes stets mit dem neuen Kopfpixel überschrieben, der sich dadurch nicht mehr an einer festen Speicheradresse der RAM befindet sondern durch alle benutzten Adressen rotiert. Bei einer Erhöhung der Wurmlänge müssen gegebenenfalls alle Einträge über dem Kopfpixel verschoben werden, um die Reihenfolge zu wahren. 
 
-Falls die Schlange auf einen gesetzten Pixel trifft, wird geprüft, ob es sich dabei um den Pixfeed handelt. Ist dies der Fall, wird die Schlange verlängert und ein neuer zufälliger Pixfeed auf einem nicht gesetzten Pixel ausgegeben. Wenn nicht, muss die Schlange in sich selbst gelaufen sein und das Spiel wird beendet. Gesteuert wird die Schlange über die Tasten w-a-s-d. Weitere Informationen können dem Programmablaufpan und dem kommentierten Programm entnommen werden.  
+Falls die Schlange auf einen gesetzten Pixel trifft, wird geprüft, ob es sich dabei um den Pixfeed handelt. Ist dies der Fall, wird die Schlange verlängert und ein neuer zufälliger Pixfeed auf einem nicht gesetzten Pixel ausgegeben. Wenn nicht, muss die Schlange in sich selbst gelaufen sein und das Spiel wird beendet. Gesteuert wird die Schlange über die Tasten w-a-s-d. Sie kann auch aus dem Spielfeld herausbewegt werden und erscheint in diesem Fall am gegenüberliegenden Rand. Weitere Informationen können dem Programmablaufpan und dem kommentierten Programm entnommen werden.  
+
+![image](https://user-images.githubusercontent.com/31915930/36232751-47aafb2e-11e3-11e8-98b5-9839d7ebaf21.png)
 
 ### Programmablaufplan (PAP)<a name="2.1"></a>
 
 Da das Programmieren in Assemblersprache schnell unübersichtlich wurde, erstellte ich mit mit PapDesigner vorab einen PAP, nach welchem ich das Spiel programmierte. 
+
+![image](https://user-images.githubusercontent.com/31915930/36232327-aa944b0c-11e1-11e8-94c6-d0355de4ba2c.png)
 
 ### Assemblerprogramm<a name="2.2"></a>
 

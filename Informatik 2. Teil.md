@@ -101,25 +101,25 @@ jmf 1 eq $12
 ---------------
 
 inc cx cx 0       #Erhöhung "Wurmlänge"
-mov 0 ex rg 		  $13  } Prüfen und Setzten eines neuen Pixfeed
+mov 0 ex rg       $13  } Prüfen und Setzten eines neuen Pixfeed
 jmt 1 pix $13
 spi 0 ex			
 
 ===============
 
-mov 0 ram bx		  $14 #Speichern und setzen des neuen Kopfpixels
+mov 0 ram bx      $14 #Speichern und setzen des neuen Kopfpixels
 spi 0 bx 
 
-jmt 1 rtc $15		  $15 #Warten auf Realtimeclock (zur Kompensation verschiedener Simulationsgeschwindigkeiten)
+jmt 1 rtc $15     $15 #Warten auf Realtimeclock (zur Kompensation verschiedener Simulationsgeschwindigkeiten)
 
-jmp 1 0 $2			  #Zum Anfang der Hauptschleife springen
+jmp 1 0 $2        #Zum Anfang der Hauptschleife springen
 
 ===============
 ===============
 
-res ipb				    $16  } Spielende
-jmt 1 key $17		  $17 #Auf Nutzereingabe warten
-res all				    #Prozessor Zurücksetzten
+res ipb           $16  } Spielende
+jmt 1 key $17     $17 #Auf Nutzereingabe warten
+res all           #Prozessor Zurücksetzten
 ```
 
 ## Erweiterungsmöglichkeiten

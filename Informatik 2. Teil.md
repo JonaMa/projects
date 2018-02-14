@@ -2,23 +2,33 @@
 
 ## Inhaltsverzeichnis
 
-## Einleitung
+- [Einleitung](#1)
+
+- [Snake](#2)
+
+  - [Programmablaufplan](#2.1)
+
+  - [Assemblerprogramm](#2.2)
+
+- [Erweiterungsmöglichkeiten](#3)
+
+## Einleitung<a name="1"></a>
 
 Ziel des 2. Arbeitsabschnittes war die Programmierung des Spieleklassikers Snake auf meinem Prozessor. In dem Spiel bewegt man eine Schlange über ein Spielfeld und versucht, möglichts viele Punkte ("Pixfeed") zu "fressen", die eine Erhöhung der Wurmlänge zu folge haben. Dabei darf der Wurm sich selber oder andere Hindernisse nicht berühren. 
 
 Besonders in der Anfangszeit arbeitete ich noch an den Rechenwerken weiter, welche im nächsten Teil vorgestellt werden. Außerdem arbeitete ich ein Konzept für die Implementierung einer Interrupt-Schaltung im Prozessor aus. Das dazu notwendige System für das Konflikt- und Prioritätsmanegament stellte sich jedoch als recht komliziert heraus, weshalb das Projekt vorläufig beendet wurde. Snake konnte dadurch nicht in dem erwarteten Funktionsumfang fertiggestellt werden (siehe Erweiterungsmöglichkeiten).
 
-## Snake
+## Snake<a name="2"></a>
 
-In der vorigen Arbeit wurde eine Testversion von Snake vorgestellt, bei der jedoch jeder Pixel der Schlange neu berechnet wurde. Um bei der vergleichsweise langsamen Simulationsgeschwindigkeit des Prozessors von ca. 80-120 Hz ein adäquates Spielerlebnis zu schaffen, berechnet der neue Algorythmus nur den Kopf- und Endpixel neu. Dafür wird der der Eintrag des Endpixes stets mit dem neuen Kopfpixel überschrieben, der sich dadurch nicht mehr an einer festen Speicheradresse der RAM befindet sondern durch alle benutzten Adressen rotiert. Bei einer Erhöhung der Wurmlänge müssen gegebenenfalls alle Einträge über dem Kopfpixel verschoben werden, um die Reihenfolge zu waren. 
+In der vorigen Arbeit wurde eine Testversion von Snake vorgestellt, bei der jedoch jeder Pixel der Schlange neu berechnet wurde. Um bei der vergleichsweise langsamen Simulationsgeschwindigkeit des Prozessors von ca. 80-120 Hz ein adäquates Spielerlebnis zu schaffen, berechnet der neue Algorithmus nur den Kopf- und Endpixel neu. Dafür wird der der Eintrag des Endpixes stets mit dem neuen Kopfpixel überschrieben, der sich dadurch nicht mehr an einer festen Speicheradresse der RAM befindet sondern durch alle benutzten Adressen rotiert. Bei einer Erhöhung der Wurmlänge müssen gegebenenfalls alle Einträge über dem Kopfpixel verschoben werden, um die Reihenfolge zu waren. 
 
 Falls die Schlange auf einen gesetzten Pixel trifft, wird geprüft, ob es sich dabei um den Pixfeed handelt. Ist dies der Fall, wird die Schlange verlängert und ein neuer zufälliger Pixfeed auf einem nicht gesetzten Pixel ausgegeben. Wenn nicht, muss die Schlange in sich selbst gelaufen sein und das Spiel wird beendet. Gesteuert wird die Schlange über die Tasten w-a-s-d. Weitere Informationen können dem Programmablaufpan und dem kommentierten Programm entnommen werden.  
 
-### Programmablaufplan (PAP)
+### Programmablaufplan (PAP)<a name="2.1"></a>
 
 Da das Programmieren in Assemblersprache schnell unübersichtlich wurde, erstellte ich mit mit PapDesigner vorab einen PAP, nach welchem ich das Spiel programmierte. 
 
-### Assemblerprogramm
+### Assemblerprogramm<a name="2.2"></a>
 
 
 ```
@@ -122,7 +132,7 @@ jmt 1 key $17     $17 #Auf Nutzereingabe warten
 res all           #Prozessor Zurücksetzten
 ```
 
-## Erweiterungsmöglichkeiten
+## Erweiterungsmöglichkeiten<a name="3"></a>
 
 Das Programm ist in seinem Funktionsumfang noch erweiterungsfähig. Da es Pixel, die nicht dem Pixfeed entsprechen, nach dem Ausschlussprinzip erkennt, können vor Beginn der Hauptschleife beliebige Pixel als Hindernis in das Spielfeld gesetzt werden. Die Art des Hindernisses könnte auch im Vorfeld durch den Spieler ausgewählt werden. Möglich wäre zum Beispiel das Spielen mit, ohne, oder mit unterbrochener Bande, aber auch ein Labyrinth-ähnlicher Spielplan. Das Setzen des neuen Pixfeeds erfolgt ebenfalls in Berücksichtigung der Hindernisse.
 Desweiteren wäre die Ausgabe der Punktzahl nach Ende des Spiels wünschenswert. Sie kann durch "Wurmlänge"-2(Ausgangslänge) berechnet werden und muss vor der Ausgabe in einzelne dezimale Ziffern umgewandelt werden. Die Umwandlung kann entweder durch eine zusätzliche Funktion (Software) oder eine neue ALU-Einheit (Hardware) bewerkstelligt werden. Für die Ausgabe der Ziffern wird eine weitere Funktion benötigt, die nach Berechnung der entsprechenden Sprungadresse auf einen Datenabschnitt im Programmspeicher zugreift, in dem das Layout aller Ziffern und Buchstaben (3x5 Pixel) gespeichert ist. Durch den *SPS*-Befehl können die Zeichen anschließend frei auf dem Bildschirm positioniert werden. Auch das Ausgeben von Texten wie "Game Over" kann auf diese Weise realisiert werden.

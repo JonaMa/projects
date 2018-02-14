@@ -16,7 +16,7 @@
 
 Ziel des 2. Arbeitsabschnittes war die Programmierung des Spieleklassikers Snake auf meinem Prozessor. In dem Spiel bewegt man eine Schlange über ein Spielfeld und versucht, möglichts viele Punkte ("Pixfeed") zu "fressen", die eine Erhöhung der Wurmlänge zu folge haben. Dabei darf der Wurm sich selber oder andere Hindernisse nicht berühren. 
 
-Besonders in der Anfangszeit arbeitete ich noch an den Rechenwerken weiter, welche im nächsten Teil vorgestellt werden. Außerdem arbeitete ich ein Konzept für die Implementierung einer Interrupt-Schaltung im Prozessor aus. Das dazu notwendige System für das Konflikt- und Prioritätsmanegament stellte sich jedoch als recht komliziert heraus, weshalb das Projekt vorläufig beendet wurde. Snake konnte dadurch nicht in dem erwarteten Funktionsumfang fertiggestellt werden (siehe Erweiterungsmöglichkeiten).
+Besonders in der Anfangszeit arbeitete ich noch an den Rechenwerken weiter, welche im nächsten Teil vorgestellt werden. Außerdem arbeitete ich ein Konzept für die Implementierung einer Interrupt-Schaltung im Prozessor aus. Das dazu notwendige System für das Konflikt- und Prioritätsmanegament stellte sich jedoch als recht komliziert heraus, weshalb das Projekt vorläufig beendet wurde. Snake konnte dadurch nicht in dem erwarteten Funktionsumfang fertiggestellt werden (siehe [Erweiterungsmöglichkeiten](#3)).
 
 ## Snake<a name="2"></a>
 

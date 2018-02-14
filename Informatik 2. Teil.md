@@ -30,7 +30,7 @@ movi 0 ram dv 98
 mov 0 ram dv 130
 
 mov 0 cx dv 2     #"Wurmlänge"-1
-mov 0 ex dv	528   #erster Pixfeed
+mov 0 ex dv 528   #erster Pixfeed
 spi 0 ex
 mov 0 p dv 2      #"Kopfposition" in P gespeichert, um unmittelbaren Zugriff auf den Kopf- und Endpixel zu haben
 
@@ -95,31 +95,31 @@ movi 0 stk ram    $11 } Auslesen in Schleifenform
 cmp 0 p cx
 jmf 1 gr $11
 
-movd 0 ram stk		  $12 } Versetztes Zurückspeichern in Schleifenform
+movd 0 ram stk    $12 } Versetztes Zurückspeichern in Schleifenform
 cmp 0 p ax
 jmf 1 eq $12
 ---------------
 
-inc cx cx 0			    #Erhöhung "Wurmlänge"
-mov 0 ex rg 		    $13  } Prüfen und Setzten eines neuen Pixfeed
+inc cx cx 0       #Erhöhung "Wurmlänge"
+mov 0 ex rg 		  $13  } Prüfen und Setzten eines neuen Pixfeed
 jmt 1 pix $13
 spi 0 ex			
 
 ===============
 
-mov 0 ram bx		    $14 #Speichern und setzen des neuen Kopfpixels
+mov 0 ram bx		  $14 #Speichern und setzen des neuen Kopfpixels
 spi 0 bx 
 
-jmt 1 rtc $15		    $15 #Warten auf Realtimeclock (zur Kompensation verschiedener Simulationsgeschwindigkeiten)
+jmt 1 rtc $15		  $15 #Warten auf Realtimeclock (zur Kompensation verschiedener Simulationsgeschwindigkeiten)
 
-jmp 1 0 $2			    #Zum Anfang der Hauptschleife springen
+jmp 1 0 $2			  #Zum Anfang der Hauptschleife springen
 
 ===============
 ===============
 
-res ipb				      $16  } Spielende
-jmt 1 key $17		    $17 #Auf Nutzereingabe warten
-res all				      #Prozessor Zurücksetzten
+res ipb				    $16  } Spielende
+jmt 1 key $17		  $17 #Auf Nutzereingabe warten
+res all				    #Prozessor Zurücksetzten
 ```
 
 ## Erweiterungsmöglichkeiten

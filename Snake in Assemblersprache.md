@@ -34,6 +34,7 @@ Da das Programmieren in Assemblersprache schnell unübersichtlich wurde, erstell
 
 ### Assemblerprogramm<a name="2.2"></a>
 
+Für die Erläuterung meiner Assemblersprache sei auf meine vorige Dokumentation _Virtueller Bau eines Computers in Logisim (erster Teil)"_ in den Abschnitten #Technischer Überblick ##Struktur des Befehlssatzes und #Assemblerprogrammierung hinzuweisen.
 
 ```
 spi 0 dv 66       } Setzen der Startpixel 

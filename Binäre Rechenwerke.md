@@ -6,6 +6,7 @@
 3. Divisionswerk
 4. Komparator
 5. Befehlszähler
+6. Anmerkung
 
 ## Addier- und Subtrahierwerk
 Grundlage dieses Rechenwerks ist ein Carry-Ripple-Addierer (Der Übertrag (Carry) "rieselt" (ripple) von der kleinsten zur größten Stelle, in diesem Fall also von rechts nach links). Jede Einheit besteht aus zwei Halbaddierern, jeweils bestehend aus einem AND- und XOR-Gate. Zusammen bilden die Halbaddierer einen Volladdierer, der die zwei Eingänge sowie einen Übertrag verrechnen kann. 

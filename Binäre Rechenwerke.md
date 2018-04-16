@@ -17,7 +17,7 @@ Sollte das Ergebnis negativ sein, wird es "natürlicherweise" als Zweierkompleme
 
 Zu sehen ist die Rechnung: 3-6 = -3
 
-![unbenannt](https://user-images.githubusercontent.com/31915930/38807241-493e7e3e-417c-11e8-9a72-9be19e7a92f2.PNG)
+![addsubb](https://user-images.githubusercontent.com/31915930/38808951-2870168a-4182-11e8-8ef1-4228798dfda8.PNG)
 
 ## Multiplikationswerk
 
